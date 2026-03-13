@@ -1,0 +1,110 @@
+INFO         | Android emulator version 36.4.9.0 (build_id 14788078) (CL:N/A)
+INFO         | Graphics backend: gfxstream
+INFO         | Found systemPath /Users/predator258/Library/Android/sdk/system-images/android-36/google_apis_playstore/arm64-v8a/
+WARNING      | Please update the emulator to one that supports the feature(s): VulkanVirtualQueue
+INFO         | Guest GLES Driver: Auto (ext controls)
+INFO         | emuglConfig_init: vulkan_mode_selected:lavapipe gles_mode_selected:host
+INFO         | Checking system compatibility:
+INFO         |   Checking: hasSufficientDiskSpace
+INFO         |      Ok: Disk space requirements to run avd: `Pixel_7` are met
+INFO         |   Checking: hasSufficientHwGpu
+INFO         |      Ok: Hardware GPU compatibility checks are not required
+INFO         |   Checking: hasSufficientSystem
+INFO         |      Ok: System requirements to run avd: `Pixel_7` are met
+INFO         | Storing crashdata in: /tmp/android-predator258/emu-crash-36.4.9.db, detection is enabled for process: 31880
+INFO         | Initializing gfxstream backend
+INFO         | android_startOpenglesRenderer: gpu info
+INFO         | 
+INFO         | initIcdPaths: ICD set to 'lavapipe', using Lavapipe ICD
+INFO         | Setting ICD filenames for the loader = /Users/predator258/Library/Android/sdk/emulator/lib64/vulkan/lvp_icd.json
+INFO         | SharedLibrary::open for [/Users/predator258/Library/Android/sdk/emulator/qemu/darwin-aarch64/lib64/vulkan/libvulkan.dylib]
+INFO         | Added library: /Users/predator258/Library/Android/sdk/emulator/qemu/darwin-aarch64/lib64/vulkan/libvulkan.dylib
+INFO         | Enabling Vulkan portability.
+INFO         | Selecting Vulkan device: llvmpipe (LLVM 21.1.4, 128 bits), Version: 1.4.330
+INFO         | Initializing VkEmulation features:
+INFO         |     glInteropSupported: false
+INFO         |     useDeferredCommands: true
+INFO         |     createResourceWithRequirements: true
+INFO         |     useVulkanComposition: false
+INFO         |     useVulkanNativeSwapchain: false
+INFO         |     enable guestRenderDoc: false
+INFO         |     ASTC LDR emulation mode: Gpu
+INFO         |     enable ETC2 emulation: true
+INFO         |     enable Ycbcr emulation: false
+INFO         |     guestVulkanOnly: false
+INFO         |     useDedicatedAllocations: false
+INFO         | Graphics Adapter Vendor Google (Apple)
+INFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Apple M3 Pro)
+INFO         | Graphics API Version OpenGL ES 3.0 (4.1 Metal - 90.5)
+INFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 
+INFO         | Graphics Device Extensions N/A
+INFO         | Disabling sparse binding feature support
+INFO         | Sending adb public key [QAAAAE1BwWp7IOzC8rYCWQWshtXQ4cGIKXl6H1NQgyJW2rikAuligEpJCYJJICgHJGxlELsXruEHuySrZQ8imhgvElk0s4U9sMrktagNgsUmY4FlI0clkHxaDdIBB6jLkN8rLLPrprpraRgSSUO5tVSCU/3HC/ubhjIE7ulccQPWrqoh46ByQZ3xhQ/piHakNbrclC2PR7MoDTvKohihg9n/WRoTKQ5qOjCjHM9Dn5ZtRnVE2rr7cIghQ0sSu6YSoZKXU90pgiBZnDIQOTQoVrkEtOnW5viT4xRBriBylbPwY+CYkS+NZwomLY77YjjxTdtWOfQsjXxDB4i9j5hYePjuT35liOCeufDcsYzo8AoztvUvmkIHgYIAtnJMaoEurRYcjZ5RL0sW2+95p8jQ3q7bKTcy9kkXMo7cH5eGCVrEO3c57mS+uO84G5j2l4lFzjoZG4U2/NPJrJy+c89E0e51OAPHNsmUuvfVrJodh7blfEpz/Kr/tBhRI80VxQBIW85XLB0f5eGuopMblZi30s+B/PJCAz2ZaAx0z5W+dNhAcAr0vOXIYJNUL/n4izSBSJXMyXUoBz+C+Dxn7ZRvxypeHuI54dS0Up56FYdHgwldPXVn2jBzUgc6ogHRGL32sRhe8/rh1+NXPtuz10SA5QCvce3kTFx0AdxBK7eBghA/tKOxLMCoHgEAAQA= predator258@unknown]
+INFO         | Userspace boot properties:
+INFO         |   androidboot.boot_devices=a003600.virtio_mmio
+INFO         |   androidboot.dalvik.vm.heapsize=512m
+INFO         |   androidboot.debug.hwui.renderer=skiagl
+INFO         |   androidboot.debug.sf.nobootanimation=1
+INFO         |   androidboot.hardware=ranchu
+INFO         |   androidboot.hardware.gltransport=pipe
+INFO         |   androidboot.hardware.vulkan=ranchu
+INFO         |   androidboot.logcat=*:V
+INFO         |   androidboot.opengles.version=196608
+INFO         |   androidboot.qemu=1
+INFO         |   androidboot.qemu.adb.pubkey=QAAAAE1BwWp7IOzC8rYCWQWshtXQ4cGIKXl6H1NQgyJW2rikAuligEpJCYJJICgHJGxlELsXruEHuySrZQ8imhgvElk0s4U9sMrktagNgsUmY4FlI0clkHxaDdIBB6jLkN8rLLPrprpraRgSSUO5tVSCU/3HC/ubhjIE7ulccQPWrqoh46ByQZ3xhQ/piHakNbrclC2PR7MoDTvKohihg9n/WRoTKQ5qOjCjHM9Dn5ZtRnVE2rr7cIghQ0sSu6YSoZKXU90pgiBZnDIQOTQoVrkEtOnW5viT4xRBriBylbPwY+CYkS+NZwomLY77YjjxTdtWOfQsjXxDB4i9j5hYePjuT35liOCeufDcsYzo8AoztvUvmkIHgYIAtnJMaoEurRYcjZ5RL0sW2+95p8jQ3q7bKTcy9kkXMo7cH5eGCVrEO3c57mS+uO84G5j2l4lFzjoZG4U2/NPJrJy+c89E0e51OAPHNsmUuvfVrJodh7blfEpz/Kr/tBhRI80VxQBIW85XLB0f5eGuopMblZi30s+B/PJCAz2ZaAx0z5W+dNhAcAr0vOXIYJNUL/n4izSBSJXMyXUoBz+C+Dxn7ZRvxypeHuI54dS0Up56FYdHgwldPXVn2jBzUgc6ogHRGL32sRhe8/rh1+NXPtuz10SA5QCvce3kTFx0AdxBK7eBghA/tKOxLMCoHgEAAQA= predator258@unknown
+INFO         |   androidboot.qemu.avd_name=Pixel_7
+INFO         |   androidboot.qemu.camera_hq_edge_processing=0
+INFO         |   androidboot.qemu.camera_protocol_ver=1
+INFO         |   androidboot.qemu.cpuvulkan.version=4202496
+INFO         |   androidboot.qemu.gltransport.drawFlushInterval=800
+INFO         |   androidboot.qemu.gltransport.name=pipe
+INFO         |   androidboot.qemu.hwcodec.avcdec=2
+INFO         |   androidboot.qemu.hwcodec.hevcdec=2
+INFO         |   androidboot.qemu.hwcodec.vpxdec=2
+INFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647
+INFO         |   androidboot.qemu.skin=pixel_7
+INFO         |   androidboot.qemu.virtiowifi=1
+INFO         |   androidboot.qemu.vsync=60
+INFO         |   androidboot.serialno=EMULATOR36X4X9X0
+INFO         |   androidboot.vbmeta.digest=6b98218b46c523e17f8b4a810c5a51b4af28f327c436ce0d286bf937f545cfd7
+INFO         |   androidboot.vbmeta.hash_alg=sha256
+INFO         |   androidboot.vbmeta.size=6720
+INFO         |   androidboot.veritymode=enforcing
+INFO         | Monitoring duration of emulator setup.
+WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
+INFO         | Using security allow list from: /Users/predator258/Library/Android/sdk/emulator/lib/emulator_access.json
+WARNING      | *** Basic token auth should only be used by android-studio ***
+INFO         | The active JSON Web Key Sets can be found here: /Users/predator258/Library/Caches/TemporaryItems/avd/running/31880/jwks/384fc8f1-4c06-4a88-8778-34087c1729a6/active.jwk
+INFO         | Scanning /Users/predator258/Library/Caches/TemporaryItems/avd/running/31880/jwks/384fc8f1-4c06-4a88-8778-34087c1729a6 for jwk keys.
+INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
+INFO         | Advertising in: /Users/predator258/Library/Caches/TemporaryItems/avd/running/pid_31880.ini
+INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
+INFO         | setDisplayActiveConfig 0
+INFO         | Checking system compatibility:
+INFO         |   Checking: hasSufficientDiskSpace
+INFO         |      Ok: Disk space requirements to run avd: `Pixel_7` are met
+INFO         |   Checking: hasSufficientHwGpu
+INFO         |      Ok: Hardware GPU compatibility checks are not required
+INFO         |   Checking: hasSufficientSystem
+INFO         |      Ok: System requirements to run avd: `Pixel_7` are met
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_rgbcSensorValueWidget_valueChanged() (:0, )
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_posture_valueChanged(int) (:0, )
+USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
+INFO         | Warning: QObject::connect: Cannot queue arguments of type 'std::vector<android::emulation::control::SnapshotInfo>'
+(Make sure 'std::vector<android::emulation::control::SnapshotInfo>' is registered using qRegisterMetaType().) (:0, )
+INFO         | AVD supportsNativeGLES=1, supportsGuestAngle=1
+INFO         | Guest Angle is still unstable for API > 35.
+INFO         | Created extended window in 261.411ms
+INFO         | Activated packet streamer for uwb emulation
+INFO         | Activated packet streamer for bluetooth emulation
+WARNING      | adb command '/Users/predator258/Library/Android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+INFO         | Boot completed in 10180 ms
+INFO         | Increasing screen off timeout, logcat buffer size to 2M.
+INFO         | Created VkInstance:0x94b35f000 for application:'' engine:''.
+INFO         | Destroyed VkInstance:0x94b35f000 for application:'' engine:''.
+INFO         | Wait for emulator (pid 31880) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+
+INFO         | Wait for emulator (pid 31880) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+
+INFO         | Saving with gfxstream=1
+INFO         | Saving snapshot 'default_boot' using 1382 ms

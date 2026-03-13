@@ -11,6 +11,8 @@ LOCK_FILE="$PROJECT_DIR/.run.lock"
 RUN_TS="$(date +"%Y%m%d_%H%M%S")"
 RUN_LOG="$RUN_LOG_DIR/run_$RUN_TS.log"
 SCRIPT_START_EPOCH="$(date +%s)"
+MODE="${1:-full}"
+PRESERVE_STACK_ON_EXIT=0
 
 # Runtime knobs (override via env if needed)
 : "${AVD_NAME:=Pixel_7}"
@@ -21,6 +23,8 @@ SCRIPT_START_EPOCH="$(date +%s)"
 : "${POST_EMULATOR_BOOT_STABILIZE_SEC:=5}"
 : "${POST_APPIUM_START_STABILIZE_SEC:=5}"
 : "${ADB_CMD_TIMEOUT_SEC:=12}"
+: "${ADB_STABLE_TIMEOUT_SEC:=45}"
+: "${ADB_STABLE_SUCCESS_COUNT:=3}"
 
 mkdir -p \
   "$LOG_DIR" \
@@ -35,28 +39,33 @@ exec > >(tee -a "$RUN_LOG") 2>&1
 
 echo "[$(date +"%F %T")] Run started"
 echo "[$(date +"%F %T")] Run log: $RUN_LOG"
+echo "[$(date +"%F %T")] Mode: $MODE"
 
 cleanup() {
   SCRIPT_END_EPOCH="$(date +%s)"
   SCRIPT_ELAPSED_SEC=$((SCRIPT_END_EPOCH - SCRIPT_START_EPOCH))
   SCRIPT_ELAPSED_FMT="$(printf '%02d:%02d:%02d' $((SCRIPT_ELAPSED_SEC/3600)) $(((SCRIPT_ELAPSED_SEC%3600)/60)) $((SCRIPT_ELAPSED_SEC%60)))"
 
-  if [[ -n "${EMULATOR_SERIAL:-}" ]]; then
-    echo "[$(date +"%F %T")] Shutting down emulator: $EMULATOR_SERIAL"
-    adb -s "$EMULATOR_SERIAL" emu kill >/dev/null 2>&1 || true
-  fi
+  if [[ "$PRESERVE_STACK_ON_EXIT" -eq 0 ]]; then
+    if [[ -n "${EMULATOR_SERIAL:-}" ]]; then
+      echo "[$(date +"%F %T")] Shutting down emulator: $EMULATOR_SERIAL"
+      adb -s "$EMULATOR_SERIAL" emu kill >/dev/null 2>&1 || true
+    fi
 
-  APP_PID_ON_PORT="$(lsof -nP -iTCP:"$APPIUM_PORT" -sTCP:LISTEN -t 2>/dev/null | head -n 1 || true)"
-  if [[ -n "${APP_PID_ON_PORT:-}" ]]; then
-    APP_CMDLINE="$(ps -p "$APP_PID_ON_PORT" -o command= 2>/dev/null || true)"
-    if [[ "$APP_CMDLINE" == *appium* ]]; then
-      echo "[$(date +"%F %T")] Shutting down Appium: pid=$APP_PID_ON_PORT"
-      kill "$APP_PID_ON_PORT" >/dev/null 2>&1 || true
-      sleep 1
-      if ps -p "$APP_PID_ON_PORT" >/dev/null 2>&1; then
-        kill -9 "$APP_PID_ON_PORT" >/dev/null 2>&1 || true
+    APP_PID_ON_PORT="$(lsof -nP -iTCP:"$APPIUM_PORT" -sTCP:LISTEN -t 2>/dev/null | head -n 1 || true)"
+    if [[ -n "${APP_PID_ON_PORT:-}" ]]; then
+      APP_CMDLINE="$(ps -p "$APP_PID_ON_PORT" -o command= 2>/dev/null || true)"
+      if [[ "$APP_CMDLINE" == *appium* ]]; then
+        echo "[$(date +"%F %T")] Shutting down Appium: pid=$APP_PID_ON_PORT"
+        kill "$APP_PID_ON_PORT" >/dev/null 2>&1 || true
+        sleep 1
+        if ps -p "$APP_PID_ON_PORT" >/dev/null 2>&1; then
+          kill -9 "$APP_PID_ON_PORT" >/dev/null 2>&1 || true
+        fi
       fi
     fi
+  else
+    echo "[$(date +"%F %T")] Preserving emulator and Appium for warmed run"
   fi
 
   rm -f "$LOCK_FILE"
@@ -113,6 +122,16 @@ require_cmd curl
 require_cmd appium
 require_cmd lsof
 
+case "$MODE" in
+  full|prewarm|hot)
+    ;;
+  *)
+    echo "[$(date +"%F %T")] Unsupported mode: $MODE"
+    echo "[$(date +"%F %T")] Use one of: full, prewarm, hot"
+    exit 1
+    ;;
+esac
+
 TIMEOUT_BIN=""
 if command -v gtimeout >/dev/null 2>&1; then
   TIMEOUT_BIN="gtimeout"
@@ -130,6 +149,43 @@ run_with_timeout() {
   fi
 }
 
+adb_shell_probe() {
+  local output
+  output="$(run_with_timeout "$ADB_CMD_TIMEOUT_SEC" adb -s "$EMULATOR_SERIAL" shell echo ping 2>/dev/null | tr -d '\r')" || return 1
+  [[ "$output" == "ping" ]]
+}
+
+wait_for_stable_adb() {
+  local deadline=$((SECONDS + ADB_STABLE_TIMEOUT_SEC))
+  local stable_hits=0
+  local reconnected=0
+
+  while [[ $SECONDS -lt $deadline ]]; do
+    local state
+    state="$(adb -s "$EMULATOR_SERIAL" get-state 2>/dev/null || true)"
+
+    if [[ "$state" == "device" ]] && adb_shell_probe; then
+      stable_hits=$((stable_hits + 1))
+      if [[ $stable_hits -ge $ADB_STABLE_SUCCESS_COUNT ]]; then
+        echo "[$(date +"%F %T")] Emulator adb is stable (${stable_hits} consecutive shell probes)"
+        return 0
+      fi
+    else
+      stable_hits=0
+      if [[ $reconnected -eq 0 ]]; then
+        echo "[$(date +"%F %T")] Emulator adb is not stable yet. Attempting adb reconnect."
+        run_with_timeout "$ADB_CMD_TIMEOUT_SEC" adb reconnect offline >/dev/null 2>&1 || true
+        run_with_timeout "$ADB_CMD_TIMEOUT_SEC" adb -s "$EMULATOR_SERIAL" wait-for-device >/dev/null 2>&1 || true
+        reconnected=1
+      fi
+    fi
+
+    sleep 1
+  done
+
+  return 1
+}
+
 # 2) Ensure emulator running.
 get_running_emulator() {
   adb devices | awk '/^emulator-[0-9]+[[:space:]]+device$/ {print $1; exit}'
@@ -139,6 +195,10 @@ EMULATOR_SERIAL="$(get_running_emulator || true)"
 EMULATOR_STARTED=0
 
 if [[ -z "$EMULATOR_SERIAL" ]]; then
+  if [[ "$MODE" == "hot" ]]; then
+    echo "[$(date +"%F %T")] Hot mode requires an already running emulator."
+    exit 1
+  fi
   EMULATOR_STARTED=1
   echo "[$(date +"%F %T")] No running emulator detected. Starting AVD: $AVD_NAME"
   nohup emulator -avd "$AVD_NAME" -no-snapshot-load -no-boot-anim > "$EMULATOR_LOG_DIR/emulator_$RUN_TS.log" 2>&1 &
@@ -231,6 +291,10 @@ reap_stale_appium_on_port() {
 if appium_up; then
   echo "[$(date +"%F %T")] Appium already running on $APPIUM_HOST:$APPIUM_PORT"
 else
+  if [[ "$MODE" == "hot" ]]; then
+    echo "[$(date +"%F %T")] Hot mode requires Appium to already be running on $APPIUM_HOST:$APPIUM_PORT."
+    exit 1
+  fi
   reap_stale_appium_on_port
   echo "[$(date +"%F %T")] Starting Appium on $APPIUM_HOST:$APPIUM_PORT"
   APPIUM_LOG="$APPIUM_LOG_DIR/appium_$RUN_TS.log"
@@ -272,26 +336,20 @@ fi
 
 echo "[$(date +"%F %T")] Appium ready"
 
-# Final adb readiness gate to reduce "device offline" session failures.
-echo "[$(date +"%F %T")] Verifying emulator device state before Python launch"
-deadline=$((SECONDS + 30))
-while [[ $SECONDS -lt $deadline ]]; do
-  state="$(adb -s "$EMULATOR_SERIAL" get-state 2>/dev/null || true)"
-  if [[ "$state" == "device" ]]; then
-    echo "[$(date +"%F %T")] Emulator state is online: $state"
-    break
-  fi
-  sleep 1
-done
+if [[ "$MODE" == "prewarm" ]]; then
+  PRESERVE_STACK_ON_EXIT=1
+fi
 
-if [[ "$(adb -s "$EMULATOR_SERIAL" get-state 2>/dev/null || true)" != "device" ]]; then
-  echo "[$(date +"%F %T")] Emulator is not online (state=$(adb -s "$EMULATOR_SERIAL" get-state 2>/dev/null || true)). Exiting."
+# Final adb readiness gate to reduce "device offline" session failures.
+echo "[$(date +"%F %T")] Verifying emulator adb stability before Python launch"
+if ! wait_for_stable_adb; then
+  echo "[$(date +"%F %T")] Emulator adb did not become stable in time (state=$(adb -s "$EMULATOR_SERIAL" get-state 2>/dev/null || true)). Exiting."
   exit 1
 fi
 
 # 4) Run python booking flow (its own logs/screenshots still apply).
 echo "[$(date +"%F %T")] Launching python automation"
 cd "$PROJECT_DIR"
-python3 main.py
+python3 main.py "$MODE"
 
 echo "[$(date +"%F %T")] Run finished successfully"

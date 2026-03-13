@@ -1,0 +1,40 @@
+[2026-03-13 07:40:53] Run started
+[2026-03-13 07:40:53] Run log: /Users/predator258/NoBrok_Automation/logs/runs/run_20260313_074053.log
+[2026-03-13 07:40:53] Mode: prewarm
+[2026-03-13 07:40:53] Lock acquired
+[2026-03-13 07:40:53] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-13 07:40:53] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-13 07:41:01] Emulator detected: emulator-5554
+[2026-03-13 07:41:01] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-13 07:41:01] Waiting for boot completion
+[2026-03-13 07:41:05] Emulator boot completed
+[2026-03-13 07:41:05] Stabilizing emulator for 5s
+[2026-03-13 07:41:10] Waking and unlocking emulator
+[2026-03-13 07:41:12] Emulator unlock sequence done
+[2026-03-13 07:41:12] Starting Appium on 127.0.0.1:4723
+[2026-03-13 07:41:12] Appium pid=25057 log=/Users/predator258/NoBrok_Automation/logs/appium/appium_20260313_074053.log
+[2026-03-13 07:41:12] Waiting for Appium... 60s left
+[2026-03-13 07:41:14] Stabilizing Appium for 5s
+[2026-03-13 07:41:19] Appium ready
+[2026-03-13 07:41:19] Verifying emulator device state before Python launch
+[2026-03-13 07:41:19] Emulator state is online: device
+[2026-03-13 07:41:19] Launching python automation
+[FAILED] Message: Error executing adbExec. Original error: 'Command '/Users/predator258/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 1'; Command output: adb: device offline
+
+Stacktrace:
+UnknownError: Error executing adbExec. Original error: 'Command '/Users/predator258/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 1'; Command output: adb: device offline
+
+    at getResponseForW3CError (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/errors.js:824:36)
+    at asyncHandler (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/protocol.js:430:77)
+The above error is caused by
+Error: Error executing adbExec. Original error: 'Command '/Users/predator258/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 1'; Command output: adb: device offline
+
+    at ChildProcess.<anonymous> (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/teen_process/build/lib/exec.js:118:43)
+    at ChildProcess.emit (node:events:508:20)
+    at maybeClose (node:internal/child_process:1108:16)
+    at Socket.<anonymous> (node:internal/child_process:480:11)
+    at Socket.emit (node:events:508:20)
+    at Pipe.<anonymous> (node:net:350:12) (after 0.88s)
+[2026-03-13 07:41:21] Preserving emulator and Appium for warmed run
+[2026-03-13 07:41:21] Total run time: 27s (00:00:27)
+[2026-03-13 07:41:21] Lock removed

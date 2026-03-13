@@ -231,3 +231,221 @@ NoSuchElementError: An element could not be located on the page using the given 
     at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
 2026-03-13 07:14:05 | step=timing | status=failure | slot=- | details=Elapsed seconds: 49.92
 2026-03-13 07:14:05 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 49.92s
+2026-03-13 07:30:45 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:30:48 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:30:56 | step=prewarm | status=success | slot=- | details=Booking screen ready in 16.90s
+2026-03-13 07:33:33 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:33:36 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:33:45 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-13 07:33:52 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-13 07:34:00 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-13 07:34:07 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-13 07:34:08 | step=timing | status=failure | slot=- | details=Elapsed seconds: 39.14
+2026-03-13 07:34:08 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 39.14s
+2026-03-13 07:36:37 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:36:40 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:36:48 | step=prewarm | status=success | slot=- | details=Booking screen ready in 16.66s
+2026-03-13 07:40:16 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:40:19 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:40:23 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 07:40:24 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 07:40:25 | step=timing | status=failure | slot=- | details=Elapsed seconds: 13.02
+2026-03-13 07:40:25 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 13.02s
+2026-03-13 07:41:20 | step=prewarm | status=failure | slot=- | details=WebDriverException: Message: Error executing adbExec. Original error: 'Command '/Users/predator258/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 1'; Command output: adb: device offline
+
+Stacktrace:
+UnknownError: Error executing adbExec. Original error: 'Command '/Users/predator258/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 1'; Command output: adb: device offline
+
+    at getResponseForW3CError (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/errors.js:824:36)
+    at asyncHandler (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/protocol.js:430:77)
+The above error is caused by
+Error: Error executing adbExec. Original error: 'Command '/Users/predator258/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 1'; Command output: adb: device offline
+
+    at ChildProcess.<anonymous> (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/teen_process/build/lib/exec.js:118:43)
+    at ChildProcess.emit (node:events:508:20)
+    at maybeClose (node:internal/child_process:1108:16)
+    at Socket.<anonymous> (node:internal/child_process:480:11)
+    at Socket.emit (node:events:508:20)
+    at Pipe.<anonymous> (node:net:350:12) | after 0.88s
+2026-03-13 07:43:04 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:43:07 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:43:17 | step=prewarm | status=success | slot=- | details=Booking screen ready in 17.28s
+2026-03-13 07:43:38 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:43:41 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:43:45 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 07:43:46 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 07:43:49 | step=select_slot_court | status=success | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5
+2026-03-13 07:43:49 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 2 persons) | parsed=2
+2026-03-13 07:43:50 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Capacity below 3
+2026-03-13 07:43:50 | step=timing | status=failure | slot=- | details=Elapsed seconds: 16.11
+2026-03-13 07:43:50 | step=main | status=failure | slot=- | details=Exception: Capacity 2 is below required minimum 3 | after 16.11s
+2026-03-13 07:46:21 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:46:24 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:46:31 | step=prewarm | status=success | slot=- | details=Booking screen ready in 16.06s
+2026-03-13 07:46:52 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:46:55 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:46:58 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 07:47:00 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 07:47:03 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 2 persons) | parsed=2
+2026-03-13 07:47:04 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | capacity=2 < min=3
+2026-03-13 07:47:06 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 07:47:06 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 07:47:09 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-13 07:47:10 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=3
+2026-03-13 07:47:12 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 07:47:12 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 07:47:12 | step=timing | status=failure | slot=- | details=Elapsed seconds: 25.18
+2026-03-13 07:47:12 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00'], 'Morning': ['08:00 - 09:00', '07:00 - 08:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 25.18s
+2026-03-13 07:50:19 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:50:23 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:50:31 | step=prewarm | status=success | slot=- | details=Booking screen ready in 18.12s
+2026-03-13 07:50:58 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 07:51:01 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 07:51:05 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 07:51:06 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 07:51:09 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 2 persons) | parsed=2
+2026-03-13 07:51:10 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | capacity=2 < min=3
+2026-03-13 07:51:12 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 07:51:12 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 07:51:16 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-13 07:51:16 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=3
+2026-03-13 07:51:18 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 07:51:18 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 07:51:18 | step=timing | status=failure | slot=- | details=Elapsed seconds: 24.71
+2026-03-13 07:51:18 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00'], 'Morning': ['08:00 - 09:00', '07:00 - 08:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 24.71s
+2026-03-13 07:58:32 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:00:09 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:00:14 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:00:27 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 08:00:29 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 08:00:33 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 2 persons) | parsed=2
+2026-03-13 08:00:33 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | capacity=2 < min=3
+2026-03-13 08:00:35 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:00:35 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:00:39 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-13 08:00:39 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=3
+2026-03-13 08:00:42 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:00:42 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:00:42 | step=timing | status=failure | slot=- | details=Elapsed seconds: 36.87
+2026-03-13 08:00:42 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00'], 'Morning': ['08:00 - 09:00', '07:00 - 08:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 36.87s
+2026-03-13 08:14:47 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:14:50 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:14:58 | step=prewarm | status=success | slot=- | details=Booking screen ready in 16.65s
+2026-03-13 08:19:52 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:19:55 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:20:21 | step=prewarm | status=failure | slot=- | details=Exception: Failed click after 2 retries for locator: ('accessibility id', 'Society') | after 33.46s
+2026-03-13 08:20:45 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:20:48 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:20:52 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 08:20:53 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 08:20:56 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 2 persons) | parsed=2
+2026-03-13 08:20:57 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | capacity=2 < min=3
+2026-03-13 08:20:59 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:20:59 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:21:03 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-13 08:21:04 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=3
+2026-03-13 08:21:06 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:21:06 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:21:06 | step=timing | status=failure | slot=- | details=Elapsed seconds: 25.52
+2026-03-13 08:21:06 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00'], 'Morning': ['08:00 - 09:00', '07:00 - 08:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 25.52s
+2026-03-13 08:21:57 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:22:02 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:22:11 | step=prewarm | status=success | slot=- | details=Booking screen ready in 18.85s
+2026-03-13 08:22:28 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:22:31 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:22:35 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 08:22:36 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 08:22:39 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 2 persons) | parsed=2
+2026-03-13 08:22:40 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | capacity=2 < min=3
+2026-03-13 08:22:42 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:22:42 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:22:45 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-13 08:22:46 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=3
+2026-03-13 08:22:48 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:22:48 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:22:48 | step=timing | status=failure | slot=- | details=Elapsed seconds: 24.62
+2026-03-13 08:22:48 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00'], 'Morning': ['08:00 - 09:00', '07:00 - 08:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 24.62s
+2026-03-13 08:24:27 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:24:31 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:24:39 | step=prewarm | status=success | slot=- | details=Booking screen ready in 17.13s
+2026-03-13 08:24:50 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:24:53 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:24:57 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 08:24:58 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 08:25:01 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 2 persons) | parsed=2
+2026-03-13 08:25:02 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | capacity=2 < min=3
+2026-03-13 08:25:04 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:25:04 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:25:08 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-13 08:25:08 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=3
+2026-03-13 08:25:10 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:25:10 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:25:11 | step=timing | status=failure | slot=- | details=Elapsed seconds: 25.05
+2026-03-13 08:25:11 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00'], 'Morning': ['08:00 - 09:00', '07:00 - 08:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 25.05s
+2026-03-13 08:32:03 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:32:07 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:32:16 | step=prewarm | status=success | slot=- | details=Booking screen ready in 19.62s
+2026-03-13 08:33:02 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:33:05 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:33:09 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 08:33:11 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 08:33:13 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 2 persons) | parsed=2
+2026-03-13 08:33:14 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | capacity=2 < min=3
+2026-03-13 08:33:16 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:33:16 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:33:20 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-13 08:33:20 | step=capacity_check | status=failure | slot=08:00 - 09:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=3
+2026-03-13 08:33:23 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-13 08:33:23 | step=select_slot_court | status=failure | slot=07:00 - 08:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | Exception: Slot 07:00 - 08:00 is unavailable
+2026-03-13 08:33:23 | step=timing | status=failure | slot=- | details=Elapsed seconds: 24.86
+2026-03-13 08:33:23 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00'], 'Morning': ['08:00 - 09:00', '07:00 - 08:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 24.86s
+2026-03-13 08:37:46 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:37:49 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:37:57 | step=prewarm | status=success | slot=- | details=Booking screen ready in 16.70s
+2026-03-13 08:38:20 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:38:23 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:38:27 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 08:38:28 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 08:38:28 | step=timing | status=failure | slot=- | details=Elapsed seconds: 13.81
+2026-03-13 08:38:28 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 13.81s
+2026-03-13 08:43:04 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:43:05 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:43:13 | step=prewarm | status=success | slot=- | details=Booking screen ready in 15.03s
+2026-03-13 08:43:28 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:43:29 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:43:33 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 08:43:34 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 08:43:34 | step=timing | status=failure | slot=- | details=Elapsed seconds: 10.66
+2026-03-13 08:43:34 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 10.66s
+2026-03-13 08:46:38 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:46:39 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-13 08:46:47 | step=prewarm | status=success | slot=- | details=Booking screen ready in 14.42s
+2026-03-13 08:47:01 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-13 08:47:05 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-13 08:47:07 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-13 08:47:07 | step=timing | status=failure | slot=- | details=Elapsed seconds: 9.90
+2026-03-13 08:47:07 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 9.90s

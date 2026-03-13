@@ -1,0 +1,24 @@
+[2026-03-13 08:43:19] Run started
+[2026-03-13 08:43:19] Run log: /Users/predator258/NoBrok_Automation/logs/runs/run_20260313_084319.log
+[2026-03-13 08:43:19] Mode: hot
+[2026-03-13 08:43:19] Lock acquired
+[2026-03-13 08:43:19] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-13 08:43:19] Emulator detected: emulator-5554
+[2026-03-13 08:43:19] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-13 08:43:19] Waiting for boot completion
+[2026-03-13 08:43:19] Emulator boot completed
+[2026-03-13 08:43:19] Waking and unlocking emulator
+[2026-03-13 08:43:21] Emulator unlock sequence done
+[2026-03-13 08:43:21] Appium already running on 127.0.0.1:4723
+[2026-03-13 08:43:21] Appium ready
+[2026-03-13 08:43:21] Verifying emulator adb stability before Python launch
+[2026-03-13 08:43:24] Emulator adb is stable (3 consecutive shell probes)
+[2026-03-13 08:43:24] Launching python automation
+No slots found: window=Evening, court=Lawn Tennis Parcel 5
+No slots found: window=Evening, court=Lawn Tennis Parcel 6
+Screenshot saved: screenshots/failure/flow_exception_20260313_084334.png
+[FAILED] No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] (after 10.66s)
+[2026-03-13 08:43:35] Shutting down emulator: emulator-5554
+[2026-03-13 08:43:35] Shutting down Appium: pid=31966
+[2026-03-13 08:43:36] Total run time: 16s (00:00:16)
+[2026-03-13 08:43:36] Lock removed

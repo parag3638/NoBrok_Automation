@@ -1,0 +1,27 @@
+[2026-03-13 07:43:29] Run started
+[2026-03-13 07:43:29] Run log: /Users/predator258/NoBrok_Automation/logs/runs/run_20260313_074329.log
+[2026-03-13 07:43:29] Mode: hot
+[2026-03-13 07:43:29] Lock acquired
+[2026-03-13 07:43:29] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-13 07:43:29] Emulator detected: emulator-5554
+[2026-03-13 07:43:29] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-13 07:43:29] Waiting for boot completion
+[2026-03-13 07:43:29] Emulator boot completed
+[2026-03-13 07:43:29] Waking and unlocking emulator
+[2026-03-13 07:43:31] Emulator unlock sequence done
+[2026-03-13 07:43:31] Appium already running on 127.0.0.1:4723
+[2026-03-13 07:43:31] Appium ready
+[2026-03-13 07:43:31] Verifying emulator adb stability before Python launch
+[2026-03-13 07:43:33] Emulator adb is stable (3 consecutive shell probes)
+[2026-03-13 07:43:33] Launching python automation
+No slots found: window=Evening, court=Lawn Tennis Parcel 5
+No slots found: window=Evening, court=Lawn Tennis Parcel 6
+Selected window/slot/court: Morning | 08:00 - 09:00 | Lawn Tennis Parcel 5
+Capacity label: (Capacity remaining: 2 persons)
+Parsed capacity: 2
+Screenshot saved: screenshots/failure/flow_exception_20260313_074350.png
+[FAILED] Capacity 2 is below required minimum 3 (after 16.11s)
+[2026-03-13 07:43:51] Shutting down emulator: emulator-5554
+[2026-03-13 07:43:51] Shutting down Appium: pid=25057
+[2026-03-13 07:43:52] Total run time: 22s (00:00:22)
+[2026-03-13 07:43:52] Lock removed

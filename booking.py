@@ -50,13 +50,14 @@ def wait_present(driver, locator, timeout=config.WAIT_SEC):
     )
 
 
-def open_app():
+def open_app(launch_app=True):
     options = UiAutomator2Options()
     options.platform_name = config.PLATFORM_NAME
     options.device_name = config.DEVICE_NAME
     options.automation_name = config.AUTOMATION_NAME
-    options.app_package = config.PACKAGE
-    options.app_activity = config.ACTIVITY
+    if launch_app:
+        options.app_package = config.PACKAGE
+        options.app_activity = config.ACTIVITY
     options.no_reset = config.NO_RESET
     device_udid = os.getenv("ANDROID_SERIAL")
     if device_udid:
@@ -64,7 +65,15 @@ def open_app():
     return webdriver.Remote(config.APPIUM_URL, options=options)
 
 
-def ensure_app_in_foreground(driver):
+def ensure_app_in_foreground(driver, prefer_existing=False):
+    if prefer_existing:
+        try:
+            if driver.current_package == config.PACKAGE:
+                write_log("app_foreground", "success", details="App already in foreground")
+                return
+        except Exception:
+            pass
+
     for _ in range(config.APP_FOREGROUND_RETRIES):
         try:
             driver.activate_app(config.PACKAGE)
@@ -135,12 +144,22 @@ def close_app(driver):
     driver.quit()
 
 
+def release_driver(driver):
+    driver.quit()
+
+
 def go_to_amenities(driver):
     wait_click(driver, (AppiumBy.ACCESSIBILITY_ID, "Society"))
     wait_click(
         driver,
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Amenities")')
     )
+
+
+def open_booking_screen(driver, sport_name):
+    go_to_amenities(driver)
+    select_sport(driver, sport_name)
+    tap_book(driver)
 
 
 def select_sport(driver, sport_name):
@@ -164,6 +183,14 @@ def select_day(driver, day_name):
         driver,
         (AppiumBy.ANDROID_UIAUTOMATOR, f'new UiSelector().text("{day_name}")')
     )
+
+
+def is_booking_screen_ready(driver, day_name):
+    ready_markers = driver.find_elements(
+        AppiumBy.ANDROID_UIAUTOMATOR,
+        f'new UiSelector().text("{day_name}")'
+    )
+    return bool(ready_markers)
 
 
 def select_court(driver, court_name):
@@ -193,6 +220,31 @@ def select_slot_window(driver, slot_window):
         driver,
         (AppiumBy.ANDROID_UIAUTOMATOR, f'new UiSelector().textContains("{window}")')
     )
+
+
+def is_no_slots_found_visible(driver):
+    no_slots_title = driver.find_elements(
+        AppiumBy.ANDROID_UIAUTOMATOR,
+        'new UiSelector().text("No slots found")'
+    )
+    no_slots_message = driver.find_elements(
+        AppiumBy.ANDROID_UIAUTOMATOR,
+        'new UiSelector().textContains("no available slots")'
+    )
+    return bool(no_slots_title) or bool(no_slots_message)
+
+
+def maybe_recheck_empty_slot_state(driver, slot_window, recheck_sec, enabled):
+    if not enabled or recheck_sec <= 0:
+        return is_no_slots_found_visible(driver)
+
+    time.sleep(recheck_sec)
+    if not is_no_slots_found_visible(driver):
+        return False
+
+    select_slot_window(driver, slot_window)
+    time.sleep(recheck_sec)
+    return is_no_slots_found_visible(driver)
 
 
 def select_slot_with_timeout(driver, slot_text, timeout):
@@ -257,17 +309,65 @@ def select_preferred_slot_with_court_fallback(
     driver,
     preferred_slots_by_window,
     preferred_courts,
+    min_capacity,
     per_slot_timeout=config.PER_SLOT_TIMEOUT_SEC,
+    post_capacity_stabilize_sec=0,
 ):
     last_error = None
+    empty_state_recheck_used = False
 
     for slot_window, preferred_slots in preferred_slots_by_window.items():
-        for slot_text in preferred_slots:
-            for court_name in preferred_courts:
+        for court_name in preferred_courts:
+            select_court(driver, court_name)
+            select_slot_window(driver, slot_window)
+
+            if is_no_slots_found_visible(driver):
+                still_empty = maybe_recheck_empty_slot_state(
+                    driver,
+                    slot_window,
+                    recheck_sec=config.EMPTY_STATE_RECHECK_SEC,
+                    enabled=config.EMPTY_STATE_RECHECK_ENABLED and not empty_state_recheck_used,
+                )
+                empty_state_recheck_used = True
+                if still_empty:
+                    last_error = Exception(
+                        f"No slots found for window={slot_window}, court={court_name}"
+                    )
+                    print(f"No slots found: window={slot_window}, court={court_name}")
+                    write_log(
+                        "select_slot_court",
+                        "failure",
+                        selected_slot="-",
+                        details=f"Window={slot_window} | Court={court_name} | empty_state",
+                    )
+                    continue
+
+            for slot_text in preferred_slots:
                 try:
-                    select_court(driver, court_name)
-                    select_slot_window(driver, slot_window)
                     select_slot_with_timeout(driver, slot_text, timeout=per_slot_timeout)
+                    capacity = get_available_capacity(driver)
+                    if post_capacity_stabilize_sec > 0:
+                        time.sleep(post_capacity_stabilize_sec)
+
+                    if capacity < min_capacity:
+                        last_error = Exception(
+                            f"Capacity {capacity} is below required minimum {min_capacity}"
+                        )
+                        print(
+                            f"Rejected combo due to capacity: "
+                            f"window={slot_window}, slot={slot_text}, court={court_name}, capacity={capacity}"
+                        )
+                        write_log(
+                            "capacity_check",
+                            "failure",
+                            selected_slot=slot_text,
+                            details=(
+                                f"Window={slot_window} | Court={court_name} | "
+                                f"capacity={capacity} < min={min_capacity}"
+                            ),
+                        )
+                        continue
+
                     print(f"Selected window/slot/court: {slot_window} | {slot_text} | {court_name}")
                     write_log(
                         "select_slot_court",
@@ -410,26 +510,35 @@ def run_booking_flow(
 ):
     write_log("run_booking_flow", "success", selected_slot="-", details="Flow started")
 
-    go_to_amenities(driver)
-    select_sport(driver, sport_name)
-    tap_book(driver)
+    open_booking_screen(driver, sport_name)
+    return run_booking_flow_from_booking_screen(
+        driver=driver,
+        day_name=day_name,
+        preferred_courts=preferred_courts,
+        preferred_slots_by_window=preferred_slots_by_window,
+        family_members=family_members,
+        min_capacity=min_capacity,
+        post_capacity_stabilize_sec=config.POST_CAPACITY_STABILIZE_SEC,
+    )
+
+
+def run_booking_flow_from_booking_screen(
+    driver,
+    day_name,
+    preferred_courts,
+    preferred_slots_by_window,
+    family_members,
+    min_capacity,
+    post_capacity_stabilize_sec,
+):
     select_day(driver, day_name)
     selected_slot, selected_court = select_preferred_slot_with_court_fallback(
         driver,
         preferred_slots_by_window,
         preferred_courts,
+        min_capacity=min_capacity,
+        post_capacity_stabilize_sec=post_capacity_stabilize_sec,
     )
-    capacity = get_available_capacity(driver)
-    time.sleep(5)
-
-    if capacity < min_capacity:
-        write_log(
-            "capacity_check",
-            "failure",
-            selected_slot=selected_slot,
-            details=f"Capacity below {min_capacity}",
-        )
-        raise Exception(f"Capacity {capacity} is below required minimum {min_capacity}")
 
     select_family_members(driver, family_members)
     # confirm_booking(driver, len(family_members))
@@ -444,6 +553,95 @@ def run_booking_flow(
         details=f"Booked {selected_court}",
     )
     return selected_slot
+
+
+def prewarm(
+    sport_name=config.SPORT,
+):
+    driver = None
+    start_time = time.perf_counter()
+    try:
+        driver = open_app()
+        ensure_app_in_foreground(driver)
+        enforce_session_guard(driver)
+        open_booking_screen(driver, sport_name)
+        elapsed_sec = time.perf_counter() - start_time
+        write_log(
+            "prewarm",
+            "success",
+            selected_slot="-",
+            details=f"Booking screen ready in {elapsed_sec:.2f}s",
+        )
+        return True, f"Prewarm complete. Booking screen ready. Time: {elapsed_sec:.2f}s"
+    except Exception as exc:
+        elapsed_sec = time.perf_counter() - start_time
+        if driver is not None:
+            capture_screenshot(driver, "failure", "prewarm_exception")
+        write_log(
+            "prewarm",
+            "failure",
+            selected_slot="-",
+            details=f"{type(exc).__name__}: {exc} | after {elapsed_sec:.2f}s",
+        )
+        return False, f"{exc} (after {elapsed_sec:.2f}s)"
+    finally:
+        if driver is not None:
+            release_driver(driver)
+
+
+def run_hot():
+    driver = None
+    selected_slot = "-"
+    start_time = time.perf_counter()
+    try:
+        driver = open_app(launch_app=False)
+        ensure_app_in_foreground(driver, prefer_existing=True)
+        # enforce_session_guard(driver) #UnComment This IF any issue in Hot Mode Driver Issue
+        if not is_booking_screen_ready(driver, config.DAY):
+            open_booking_screen(driver, config.SPORT)
+        selected_slot = run_booking_flow_from_booking_screen(
+            driver=driver,
+            day_name=config.DAY,
+            preferred_courts=config.PREFERRED_COURTS,
+            preferred_slots_by_window=config.PREFERRED_SLOTS_BY_WINDOW,
+            family_members=config.FAMILY_MEMBERS,
+            min_capacity=config.MIN_CAPACITY,
+            post_capacity_stabilize_sec=config.HOT_POST_CAPACITY_STABILIZE_SEC,
+        )
+        elapsed_sec = time.perf_counter() - start_time
+        write_log(
+            "timing",
+            "success",
+            selected_slot=selected_slot,
+            details=f"Elapsed seconds: {elapsed_sec:.2f}",
+        )
+        write_log(
+            "main",
+            "success",
+            selected_slot=selected_slot,
+            details=f"Hot flow completed in {elapsed_sec:.2f}s",
+        )
+        return True, f"Booked successfully. Slot: {selected_slot}. Time: {elapsed_sec:.2f}s"
+    except Exception as exc:
+        elapsed_sec = time.perf_counter() - start_time
+        if driver is not None:
+            capture_screenshot(driver, "failure", "flow_exception")
+        write_log(
+            "timing",
+            "failure",
+            selected_slot=selected_slot,
+            details=f"Elapsed seconds: {elapsed_sec:.2f}",
+        )
+        write_log(
+            "main",
+            "failure",
+            selected_slot=selected_slot,
+            details=f"{type(exc).__name__}: {exc} | after {elapsed_sec:.2f}s",
+        )
+        return False, f"{exc} (after {elapsed_sec:.2f}s)"
+    finally:
+        if driver is not None:
+            close_app(driver)
 
 
 def run():

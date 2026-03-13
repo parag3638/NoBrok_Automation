@@ -1,0 +1,90 @@
+[2026-03-13 07:57:58] Run started
+[2026-03-13 07:57:58] Run log: /Users/predator258/NoBrok_Automation/logs/runs/run_20260313_075758.log
+[2026-03-13 07:57:58] Mode: prewarm
+[2026-03-13 07:57:58] Lock acquired
+[2026-03-13 07:57:58] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-13 07:57:58] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-13 07:58:08] Emulator detected: emulator-5554
+[2026-03-13 07:58:08] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-13 07:58:08] Waiting for boot completion
+[2026-03-13 07:58:10] Emulator boot completed
+[2026-03-13 07:58:10] Stabilizing emulator for 5s
+[2026-03-13 07:58:15] Waking and unlocking emulator
+[2026-03-13 07:58:17] Emulator unlock sequence done
+[2026-03-13 07:58:17] Starting Appium on 127.0.0.1:4723
+[2026-03-13 07:58:17] Appium pid=27394 log=/Users/predator258/NoBrok_Automation/logs/appium/appium_20260313_075758.log
+[2026-03-13 07:58:17] Waiting for Appium... 60s left
+[2026-03-13 07:58:19] Stabilizing Appium for 5s
+[2026-03-13 07:58:24] Appium ready
+[2026-03-13 07:58:24] Verifying emulator adb stability before Python launch
+[2026-03-13 07:58:26] Emulator adb is stable (3 consecutive shell probes)
+[2026-03-13 07:58:26] Launching python automation
+Traceback (most recent call last):
+  File "/Users/predator258/NoBrok_Automation/booking.py", line 566, in prewarm
+    enforce_session_guard(driver)
+  File "/Users/predator258/NoBrok_Automation/booking.py", line 120, in enforce_session_guard
+    if is_login_screen_visible(driver):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/predator258/NoBrok_Automation/booking.py", line 110, in is_login_screen_visible
+    source = driver.page_source.lower()
+             ^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 561, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)["value"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 446, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/appium/webdriver/errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: 'GET /session/b03f04a4-4815-424e-a6a5-ba428216d4e4/source' cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Stacktrace:
+InvalidContextError: 'GET /session/b03f04a4-4815-424e-a6a5-ba428216d4e4/source' cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+    at UIA2Proxy.proxyCommand (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/build/lib/uiautomator2.js:32:19)
+    at UIA2Proxy.proxyReqRes (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/jsonwp-proxy/proxy.js:368:49)
+    at runCommandPromise (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/driver.js:121:30)
+    at /opt/homebrew/lib/node_modules/appium/node_modules/async-lock/lib/index.js:171:12
+    at AsyncLock._promiseTry (/opt/homebrew/lib/node_modules/appium/node_modules/async-lock/lib/index.js:306:31)
+    at exec (/opt/homebrew/lib/node_modules/appium/node_modules/async-lock/lib/index.js:170:9)
+    at AsyncLock.acquire (/opt/homebrew/lib/node_modules/appium/node_modules/async-lock/lib/index.js:189:3)
+    at AndroidUiautomator2Driver.executeCommand (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/driver.js:161:45)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async defaultBehavior (/opt/homebrew/lib/node_modules/appium/build/lib/appium.js:634:20)
+    at async AppiumDriver.executeWrappedCommand (/opt/homebrew/lib/node_modules/appium/build/lib/appium.js:726:22)
+    at async AppiumDriver.executeCommand (/opt/homebrew/lib/node_modules/appium/build/lib/appium.js:645:21)
+    at async doJwpProxy (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/protocol.js:476:9)
+    at async asyncHandler (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/protocol.js:307:21)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/predator258/NoBrok_Automation/main.py", line 9, in <module>
+    ok, message = prewarm()
+                  ^^^^^^^^^
+  File "/Users/predator258/NoBrok_Automation/booking.py", line 579, in prewarm
+    capture_screenshot(driver, "failure", "prewarm_exception")
+  File "/Users/predator258/NoBrok_Automation/logger.py", line 35, in capture_screenshot
+    driver.save_screenshot(str(path))
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 896, in save_screenshot
+    return self.get_screenshot_as_file(filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 873, in get_screenshot_as_file
+    png = self.get_screenshot_as_png()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 904, in get_screenshot_as_png
+    return b64decode(self.get_screenshot_as_base64().encode("ascii"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 914, in get_screenshot_as_base64
+    return self.execute(Command.SCREENSHOT)["value"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 446, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/appium/webdriver/errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: 'GET /screenshot' cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Stacktrace:
+UnknownError: 'GET /screenshot' cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+    at UIA2Proxy.command (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/jsonwp-proxy/proxy.js:310:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.getScreenshot (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/build/lib/commands/screenshot.js:72:19)
+[2026-03-13 07:58:40] Preserving emulator and Appium for warmed run
+[2026-03-13 07:58:40] Total run time: 42s (00:00:42)
+[2026-03-13 07:58:40] Lock removed

@@ -1,0 +1,26 @@
+[2026-03-13 07:49:46] Run started
+[2026-03-13 07:49:46] Run log: /Users/predator258/NoBrok_Automation/logs/runs/run_20260313_074946.log
+[2026-03-13 07:49:46] Mode: prewarm
+[2026-03-13 07:49:46] Lock acquired
+[2026-03-13 07:49:46] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-13 07:49:46] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-13 07:49:54] Emulator detected: emulator-5554
+[2026-03-13 07:49:54] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-13 07:49:54] Waiting for boot completion
+[2026-03-13 07:49:56] Emulator boot completed
+[2026-03-13 07:49:56] Stabilizing emulator for 5s
+[2026-03-13 07:50:01] Waking and unlocking emulator
+[2026-03-13 07:50:04] Emulator unlock sequence done
+[2026-03-13 07:50:04] Starting Appium on 127.0.0.1:4723
+[2026-03-13 07:50:04] Appium pid=26609 log=/Users/predator258/NoBrok_Automation/logs/appium/appium_20260313_074946.log
+[2026-03-13 07:50:04] Waiting for Appium... 60s left
+[2026-03-13 07:50:06] Stabilizing Appium for 5s
+[2026-03-13 07:50:11] Appium ready
+[2026-03-13 07:50:11] Verifying emulator adb stability before Python launch
+[2026-03-13 07:50:13] Emulator adb is stable (3 consecutive shell probes)
+[2026-03-13 07:50:13] Launching python automation
+[SUCCESS] Prewarm complete. Booking screen ready. Time: 18.12s
+[2026-03-13 07:50:32] Run finished successfully
+[2026-03-13 07:50:32] Preserving emulator and Appium for warmed run
+[2026-03-13 07:50:32] Total run time: 46s (00:00:46)
+[2026-03-13 07:50:32] Lock removed

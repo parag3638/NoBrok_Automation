@@ -1,33 +1,72 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LABEL="com.nobrokerhood.run"
+BASE_LABEL="com.nobrokerhood"
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 AGENT_DIR="$HOME/Library/LaunchAgents"
-PLIST_PATH="$AGENT_DIR/$LABEL.plist"
-WRAPPER_PATH="$AGENT_DIR/${LABEL}.wrapper.sh"
-RUNS_LOG="$PROJECT_DIR/logs/launchd_runs.log"
-ERR_LOG="$PROJECT_DIR/logs/launchd_errors.log"
 DOMAIN="gui/$(id -u)"
 
 usage() {
   cat <<USAGE
 Usage:
-  $0 --times "HH:MM,HH:MM,..."
+  $0 --mode MODE --times "HH:MM,HH:MM,..." [--label-suffix SUFFIX]
 
-Notes:
-- macOS may block launchd from reading scripts on Desktop.
-- If your project is under Desktop and job exits with code 126, move the repo to a non-protected path like:
-  /Users/$USER/nobrokerhood
+Examples:
+  $0 --mode prewarm --times "18:58"
+  $0 --mode hot --times "19:00"
+  $0 --mode full --times "19:00" --label-suffix run
 USAGE
 }
 
-if [[ $# -ne 2 || "$1" != "--times" ]]; then
+MODE=""
+TIMES_CSV=""
+LABEL_SUFFIX=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --mode)
+      MODE="${2:-}"
+      shift 2
+      ;;
+    --times)
+      TIMES_CSV="${2:-}"
+      shift 2
+      ;;
+    --label-suffix)
+      LABEL_SUFFIX="${2:-}"
+      shift 2
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "$MODE" || -z "$TIMES_CSV" ]]; then
   usage
   exit 1
 fi
 
-TIMES_CSV="$2"
+case "$MODE" in
+  prewarm|hot|full)
+    ;;
+  *)
+    echo "Invalid mode: $MODE"
+    exit 1
+    ;;
+esac
+
+if [[ -z "$LABEL_SUFFIX" ]]; then
+  LABEL_SUFFIX="$MODE"
+fi
+
+LABEL="${BASE_LABEL}.${LABEL_SUFFIX}"
+PLIST_PATH="$AGENT_DIR/$LABEL.plist"
+WRAPPER_PATH="$AGENT_DIR/${LABEL}.wrapper.sh"
+RUNS_LOG="$PROJECT_DIR/logs/${LABEL_SUFFIX}_launchd.out.log"
+ERR_LOG="$PROJECT_DIR/logs/${LABEL_SUFFIX}_launchd.err.log"
+
 IFS=',' read -r -a TIMES <<< "$TIMES_CSV"
 if [[ ${#TIMES[@]} -eq 0 ]]; then
   echo "Invalid --times value: $TIMES_CSV"
@@ -65,7 +104,7 @@ cat > "$WRAPPER_PATH" <<WRAP
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$PROJECT_DIR"
-exec /usr/bin/caffeinate -i "$PROJECT_DIR/run.sh"
+exec /usr/bin/caffeinate -i "$PROJECT_DIR/run.sh" "$MODE"
 WRAP
 chmod +x "$WRAPPER_PATH"
 
@@ -112,5 +151,6 @@ launchctl print "$DOMAIN/$LABEL" | rg -n "state =|last exit code|runs =|path =|p
 
 echo "Installed and loaded: $PLIST_PATH"
 echo "Wrapper: $WRAPPER_PATH"
+echo "Mode: $MODE"
 echo "Times: $TIMES_CSV"
 echo "Manual trigger: launchctl kickstart -k \"$DOMAIN/$LABEL\""

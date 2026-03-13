@@ -1,0 +1,34 @@
+[2026-03-13 08:32:53] Run started
+[2026-03-13 08:32:53] Run log: /Users/predator258/NoBrok_Automation/logs/runs/run_20260313_083253.log
+[2026-03-13 08:32:53] Mode: hot
+[2026-03-13 08:32:53] Lock acquired
+[2026-03-13 08:32:53] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-13 08:32:53] Emulator detected: emulator-5554
+[2026-03-13 08:32:53] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-13 08:32:53] Waiting for boot completion
+[2026-03-13 08:32:53] Emulator boot completed
+[2026-03-13 08:32:53] Waking and unlocking emulator
+[2026-03-13 08:32:55] Emulator unlock sequence done
+[2026-03-13 08:32:55] Appium already running on 127.0.0.1:4723
+[2026-03-13 08:32:55] Appium ready
+[2026-03-13 08:32:55] Verifying emulator adb stability before Python launch
+[2026-03-13 08:32:57] Emulator adb is stable (3 consecutive shell probes)
+[2026-03-13 08:32:57] Launching python automation
+No slots found: window=Evening, court=Lawn Tennis Parcel 5
+No slots found: window=Evening, court=Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 2 persons)
+Parsed capacity: 2
+Rejected combo due to capacity: window=Morning, slot=08:00 - 09:00, court=Lawn Tennis Parcel 5, capacity=2
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: window=Morning, slot=07:00 - 08:00, court=Lawn Tennis Parcel 5
+Capacity label: (Capacity remaining: 1 person)
+Parsed capacity: 1
+Rejected combo due to capacity: window=Morning, slot=08:00 - 09:00, court=Lawn Tennis Parcel 6, capacity=1
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: window=Morning, slot=07:00 - 08:00, court=Lawn Tennis Parcel 6
+Screenshot saved: screenshots/failure/flow_exception_20260313_083323.png
+[FAILED] No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00'], 'Morning': ['08:00 - 09:00', '07:00 - 08:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] (after 24.86s)
+[2026-03-13 08:33:23] Shutting down emulator: emulator-5554
+[2026-03-13 08:33:23] Shutting down Appium: pid=30873
+[2026-03-13 08:33:24] Total run time: 30s (00:00:30)
+[2026-03-13 08:33:24] Lock removed
