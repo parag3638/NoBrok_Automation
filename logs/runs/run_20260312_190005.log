@@ -1,0 +1,31 @@
+[2026-03-12 19:00:05] Run started
+[2026-03-12 19:00:05] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_190005.log
+[2026-03-12 19:00:05] Lock acquired
+[2026-03-12 19:00:05] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 19:00:05] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 19:00:21] Emulator detected: emulator-5554
+[2026-03-12 19:00:21] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 19:00:21] Waiting for boot completion
+[2026-03-12 19:00:23] Emulator boot completed
+[2026-03-12 19:00:23] Stabilizing emulator for 5s
+[2026-03-12 19:00:28] Waking and unlocking emulator
+[2026-03-12 19:00:31] Emulator unlock sequence done
+[2026-03-12 19:00:31] Starting Appium on 127.0.0.1:4723
+[2026-03-12 19:00:31] Appium pid=17512 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_190005.log
+[2026-03-12 19:00:31] Waiting for Appium... 60s left
+[2026-03-12 19:00:33] Stabilizing Appium for 5s
+[2026-03-12 19:00:38] Appium ready
+[2026-03-12 19:00:38] Verifying emulator device state before Python launch
+[2026-03-12 19:00:38] Emulator state is online: device
+[2026-03-12 19:00:38] Launching python automation
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: window=Evening, slot=08:00 - 09:00, court=Lawn Tennis Parcel 5
+Selected window/slot/court: Evening | 08:00 - 09:00 | Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 2 persons)
+Parsed capacity: 2
+Screenshot saved: screenshots/failure/flow_exception_20260312_190112.png
+[FAILED] Capacity 2 is below required minimum 3 (after 33.82s)
+[2026-03-12 19:01:13] Shutting down emulator: emulator-5554
+[2026-03-12 19:01:13] Shutting down Appium: pid=17512
+[2026-03-12 19:01:14] Total run time: 68s (00:01:08)
+[2026-03-12 19:01:14] Lock removed

@@ -1,0 +1,36 @@
+[2026-03-12 14:27:36] Run started
+[2026-03-12 14:27:36] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_142736.log
+[2026-03-12 14:27:36] Lock acquired
+[2026-03-12 14:27:36] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 14:27:36] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 14:27:50] Emulator detected: emulator-5554
+[2026-03-12 14:27:50] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 14:27:50] Waiting for boot completion
+[2026-03-12 14:27:52] Emulator boot completed
+[2026-03-12 14:27:52] Stabilizing emulator for 5s
+[2026-03-12 14:27:57] Waking and unlocking emulator
+[2026-03-12 14:28:00] Emulator unlock sequence done
+[2026-03-12 14:28:00] Starting Appium on 127.0.0.1:4723
+[2026-03-12 14:28:00] Appium pid=3627 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_142736.log
+[2026-03-12 14:28:00] Waiting for Appium... 60s left
+[2026-03-12 14:28:02] Stabilizing Appium for 5s
+[2026-03-12 14:28:07] Appium ready
+[2026-03-12 14:28:07] Verifying emulator device state before Python launch
+[2026-03-12 14:28:07] Emulator state is online: device
+[2026-03-12 14:28:07] Launching python automation
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: slot=09:00 - 10:00, court=Lawn Tennis Parcel 5
+Selected slot/court: 09:00 - 10:00 | Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 4 persons)
+Parsed capacity: 4
+Clicked: My Family
+Already checked: Parag
+Checked: Sayel Chakraborty
+Checked: Manav Grover
+Clicked: Add
+Booking success message not detected.
+Screenshot saved: screenshots/failure/flow_exception_20260312_142850.png
+[FAILED] Booking confirmation message not detected. (after 42.81s)
+[2026-03-12 14:28:51] Shutting down emulator: emulator-5554
+[2026-03-12 14:28:51] Shutting down Appium: pid=3627
+[2026-03-12 14:28:53] Total run time: 75s (00:01:15)

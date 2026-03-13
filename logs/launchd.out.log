@@ -1,0 +1,318 @@
+[2026-03-12 14:24:44] Run started
+[2026-03-12 14:24:44] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_142444.log
+[2026-03-12 14:24:44] Lock acquired
+[2026-03-12 14:24:44] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 14:24:44] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 14:25:01] Emulator detected: emulator-5554
+[2026-03-12 14:25:01] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 14:25:01] Waiting for boot completion
+[2026-03-12 14:25:03] Emulator boot completed
+[2026-03-12 14:25:03] Stabilizing emulator for 5s
+[2026-03-12 14:25:08] Waking and unlocking emulator
+[2026-03-12 14:25:10] Emulator unlock sequence done
+[2026-03-12 14:25:10] Starting Appium on 127.0.0.1:4723
+[2026-03-12 14:25:10] Appium pid=2900 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_142444.log
+[2026-03-12 14:25:10] Waiting for Appium... 60s left
+[2026-03-12 14:25:12] Stabilizing Appium for 5s
+[2026-03-12 14:25:17] Appium ready
+[2026-03-12 14:25:17] Verifying emulator device state before Python launch
+[2026-03-12 14:25:17] Emulator state is online: device
+[2026-03-12 14:25:17] Launching python automation
+Traceback (most recent call last):
+  File "/Users/predator258/nobrokerhood/booking.py", line 443, in run
+    selected_slot = run_booking_flow(
+                    ^^^^^^^^^^^^^^^^^
+  File "/Users/predator258/nobrokerhood/booking.py", line 403, in run_booking_flow
+    select_day(driver, day_name)
+  File "/Users/predator258/nobrokerhood/booking.py", line 163, in select_day
+    wait_click(
+  File "/Users/predator258/nobrokerhood/booking.py", line 44, in wait_click
+    return safe_click(driver, locator, retries=config.CLICK_RETRIES, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/predator258/nobrokerhood/booking.py", line 27, in safe_click
+    element.click()
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webelement.py", line 114, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webelement.py", line 508, in _execute
+    return self._parent.execute(command, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 446, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/appium/webdriver/errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: Could not proxy command to the remote server. Original error: socket hang up
+Stacktrace:
+UnknownError: Could not proxy command to the remote server. Original error: socket hang up
+    at ProxyRequestError.getActualError (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/errors.js:692:16)
+    at UIA2Proxy.command (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/jsonwp-proxy/proxy.js:308:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.click (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/build/lib/commands/element.js:121:5)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/predator258/nobrokerhood/booking.py", line 469, in run
+    capture_screenshot(driver, "failure", "flow_exception")
+  File "/Users/predator258/nobrokerhood/logger.py", line 35, in capture_screenshot
+    driver.save_screenshot(str(path))
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 896, in save_screenshot
+    return self.get_screenshot_as_file(filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 873, in get_screenshot_as_file
+    png = self.get_screenshot_as_png()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 904, in get_screenshot_as_png
+    return b64decode(self.get_screenshot_as_base64().encode("ascii"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 914, in get_screenshot_as_base64
+    return self.execute(Command.SCREENSHOT)["value"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 446, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/appium/webdriver/errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: 'GET /screenshot' cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Stacktrace:
+UnknownError: 'GET /screenshot' cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+    at UIA2Proxy.command (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/jsonwp-proxy/proxy.js:310:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.getScreenshot (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/build/lib/commands/screenshot.js:72:19)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/predator258/nobrokerhood/main.py", line 6, in <module>
+    ok, message = run()
+                  ^^^^^
+  File "/Users/predator258/nobrokerhood/booking.py", line 485, in run
+    close_app(driver)
+  File "/Users/predator258/nobrokerhood/booking.py", line 135, in close_app
+    driver.quit()
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 570, in quit
+    self.execute(Command.QUIT)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py", line 446, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/appium/webdriver/errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: Error executing adbExec. Original error: 'Command '/Users/predator258/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 1'; Command output: adb: device offline
+
+Stacktrace:
+UnknownError: Error executing adbExec. Original error: 'Command '/Users/predator258/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 1'; Command output: adb: device offline
+
+    at getResponseForW3CError (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/errors.js:824:36)
+    at asyncHandler (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/protocol.js:430:77)
+The above error is caused by
+Error: Error executing adbExec. Original error: 'Command '/Users/predator258/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 1'; Command output: adb: device offline
+
+    at ChildProcess.<anonymous> (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/teen_process/build/lib/exec.js:118:43)
+    at ChildProcess.emit (node:events:508:20)
+    at maybeClose (node:internal/child_process:1108:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:305:5)
+[2026-03-12 14:25:37] Shutting down emulator: emulator-5554
+[2026-03-12 14:25:37] Shutting down Appium: pid=2900
+[2026-03-12 14:25:43] Run started
+[2026-03-12 14:25:43] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_142543.log
+[2026-03-12 14:25:43] Lock acquired
+[2026-03-12 14:25:43] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 14:25:43] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 14:25:58] Emulator detected: emulator-5554
+[2026-03-12 14:25:58] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 14:25:58] Waiting for boot completion
+[2026-03-12 14:26:00] Emulator boot completed
+[2026-03-12 14:26:00] Stabilizing emulator for 5s
+[2026-03-12 14:26:05] Waking and unlocking emulator
+[2026-03-12 14:26:07] Emulator unlock sequence done
+[2026-03-12 14:26:07] Starting Appium on 127.0.0.1:4723
+[2026-03-12 14:26:07] Appium pid=3166 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_142543.log
+[2026-03-12 14:26:07] Waiting for Appium... 60s left
+[2026-03-12 14:26:09] Stabilizing Appium for 5s
+[2026-03-12 14:26:14] Appium ready
+[2026-03-12 14:26:14] Verifying emulator device state before Python launch
+[2026-03-12 14:26:14] Emulator state is online: device
+[2026-03-12 14:26:14] Launching python automation
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: slot=09:00 - 10:00, court=Lawn Tennis Parcel 5
+Selected slot/court: 09:00 - 10:00 | Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 4 persons)
+Parsed capacity: 4
+Clicked: My Family
+Already checked: Parag
+Checked: Sayel Chakraborty
+Checked: Manav Grover
+Clicked: Add
+Booking success message not detected.
+Screenshot saved: screenshots/failure/flow_exception_20260312_142658.png
+[FAILED] Booking confirmation message not detected. (after 43.42s)
+[2026-03-12 14:26:59] Shutting down emulator: emulator-5554
+[2026-03-12 14:26:59] Shutting down Appium: pid=3166
+[2026-03-12 14:27:36] Run started
+[2026-03-12 14:27:36] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_142736.log
+[2026-03-12 14:27:36] Lock acquired
+[2026-03-12 14:27:36] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 14:27:36] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 14:27:50] Emulator detected: emulator-5554
+[2026-03-12 14:27:50] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 14:27:50] Waiting for boot completion
+[2026-03-12 14:27:52] Emulator boot completed
+[2026-03-12 14:27:52] Stabilizing emulator for 5s
+[2026-03-12 14:27:57] Waking and unlocking emulator
+[2026-03-12 14:28:00] Emulator unlock sequence done
+[2026-03-12 14:28:00] Starting Appium on 127.0.0.1:4723
+[2026-03-12 14:28:00] Appium pid=3627 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_142736.log
+[2026-03-12 14:28:00] Waiting for Appium... 60s left
+[2026-03-12 14:28:02] Stabilizing Appium for 5s
+[2026-03-12 14:28:07] Appium ready
+[2026-03-12 14:28:07] Verifying emulator device state before Python launch
+[2026-03-12 14:28:07] Emulator state is online: device
+[2026-03-12 14:28:07] Launching python automation
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: slot=09:00 - 10:00, court=Lawn Tennis Parcel 5
+Selected slot/court: 09:00 - 10:00 | Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 4 persons)
+Parsed capacity: 4
+Clicked: My Family
+Already checked: Parag
+Checked: Sayel Chakraborty
+Checked: Manav Grover
+Clicked: Add
+Booking success message not detected.
+Screenshot saved: screenshots/failure/flow_exception_20260312_142850.png
+[FAILED] Booking confirmation message not detected. (after 42.81s)
+[2026-03-12 14:28:51] Shutting down emulator: emulator-5554
+[2026-03-12 14:28:51] Shutting down Appium: pid=3627
+[2026-03-12 14:41:48] Run started
+[2026-03-12 14:41:48] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_144148.log
+[2026-03-12 14:41:48] Lock acquired
+[2026-03-12 14:41:48] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 14:41:48] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 14:42:03] Emulator detected: emulator-5554
+[2026-03-12 14:42:03] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 14:42:03] Waiting for boot completion
+[2026-03-12 14:42:07] Emulator boot completed
+[2026-03-12 14:42:07] Stabilizing emulator for 5s
+[2026-03-12 14:42:12] Waking and unlocking emulator
+[2026-03-12 14:42:14] Emulator unlock sequence done
+[2026-03-12 14:42:14] Starting Appium on 127.0.0.1:4723
+[2026-03-12 14:42:14] Appium pid=6727 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_144148.log
+[2026-03-12 14:42:14] Waiting for Appium... 60s left
+[2026-03-12 14:42:16] Stabilizing Appium for 5s
+[2026-03-12 14:42:21] Appium ready
+[2026-03-12 14:42:21] Verifying emulator device state before Python launch
+[2026-03-12 14:42:22] Emulator state is online: device
+[2026-03-12 14:42:22] Launching python automation
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: slot=09:00 - 10:00, court=Lawn Tennis Parcel 5
+Selected slot/court: 09:00 - 10:00 | Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 4 persons)
+Parsed capacity: 4
+Clicked: My Family
+Already checked: Parag
+Checked: Sayel Chakraborty
+Checked: Manav Grover
+Clicked: Add
+Booking success message not detected.
+Screenshot saved: screenshots/failure/flow_exception_20260312_144305.png
+[FAILED] Booking confirmation message not detected. (after 42.84s)
+[2026-03-12 14:43:06] Shutting down emulator: emulator-5554
+[2026-03-12 14:43:06] Shutting down Appium: pid=6727
+[2026-03-12 14:48:01] Run started
+[2026-03-12 14:48:01] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_144801.log
+[2026-03-12 14:48:01] Lock acquired
+[2026-03-12 14:48:01] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 14:48:01] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 14:48:13] Emulator detected: emulator-5554
+[2026-03-12 14:48:13] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 14:48:13] Waiting for boot completion
+[2026-03-12 14:48:17] Emulator boot completed
+[2026-03-12 14:48:17] Stabilizing emulator for 5s
+[2026-03-12 14:48:22] Waking and unlocking emulator
+[2026-03-12 14:48:24] Emulator unlock sequence done
+[2026-03-12 14:48:24] Starting Appium on 127.0.0.1:4723
+[2026-03-12 14:48:24] Appium pid=8398 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_144801.log
+[2026-03-12 14:48:24] Waiting for Appium... 60s left
+[2026-03-12 14:48:27] Stabilizing Appium for 5s
+[2026-03-12 14:48:32] Appium ready
+[2026-03-12 14:48:32] Verifying emulator device state before Python launch
+[2026-03-12 14:48:32] Emulator state is online: device
+[2026-03-12 14:48:32] Launching python automation
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: slot=09:00 - 10:00, court=Lawn Tennis Parcel 5
+Selected slot/court: 09:00 - 10:00 | Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 4 persons)
+Parsed capacity: 4
+Clicked: My Family
+Already checked: Parag
+Checked: Sayel Chakraborty
+Checked: Manav Grover
+Clicked: Add
+Booking success message not detected.
+Screenshot saved: screenshots/failure/flow_exception_20260312_144915.png
+[FAILED] Booking confirmation message not detected. (after 42.75s)
+[2026-03-12 14:49:16] Shutting down emulator: emulator-5554
+[2026-03-12 14:49:16] Shutting down Appium: pid=8398
+[2026-03-12 15:08:37] Run started
+[2026-03-12 15:08:37] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_150837.log
+[2026-03-12 15:08:37] Lock acquired
+[2026-03-12 15:08:37] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 15:08:37] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 15:08:49] Emulator detected: emulator-5554
+[2026-03-12 15:08:49] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 15:08:49] Waiting for boot completion
+[2026-03-12 15:08:53] Emulator boot completed
+[2026-03-12 15:08:53] Stabilizing emulator for 5s
+[2026-03-12 15:08:58] Waking and unlocking emulator
+[2026-03-12 15:09:01] Emulator unlock sequence done
+[2026-03-12 15:09:01] Starting Appium on 127.0.0.1:4723
+[2026-03-12 15:09:01] Appium pid=12994 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_150837.log
+[2026-03-12 15:09:01] Waiting for Appium... 60s left
+[2026-03-12 15:09:03] Stabilizing Appium for 5s
+[2026-03-12 15:09:08] Appium ready
+[2026-03-12 15:09:08] Verifying emulator device state before Python launch
+[2026-03-12 15:09:08] Emulator state is online: device
+[2026-03-12 15:09:08] Launching python automation
+Unavailable combo: window=Evening, slot=08:00 - 09:00, court=Lawn Tennis Parcel 5
+Unavailable combo: window=Evening, slot=08:00 - 09:00, court=Lawn Tennis Parcel 6
+Unavailable combo: window=Evening, slot=09:00 - 10:00, court=Lawn Tennis Parcel 5
+Unavailable combo: window=Evening, slot=09:00 - 10:00, court=Lawn Tennis Parcel 6
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: window=Morning, slot=08:00 - 09:00, court=Lawn Tennis Parcel 5
+Selected window/slot/court: Morning | 08:00 - 09:00 | Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 2 persons)
+Parsed capacity: 2
+Screenshot saved: screenshots/failure/flow_exception_20260312_151009.png
+[FAILED] Capacity 2 is below required minimum 3 (after 61.18s)
+[2026-03-12 15:10:11] Shutting down emulator: emulator-5554
+[2026-03-12 15:10:11] Shutting down Appium: pid=12994
+[2026-03-12 15:10:12] Total run time: 94s (00:01:34)
+[2026-03-12 15:10:12] Lock removed
+[2026-03-12 19:00:05] Run started
+[2026-03-12 19:00:05] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_190005.log
+[2026-03-12 19:00:05] Lock acquired
+[2026-03-12 19:00:05] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 19:00:05] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 19:00:21] Emulator detected: emulator-5554
+[2026-03-12 19:00:21] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 19:00:21] Waiting for boot completion
+[2026-03-12 19:00:23] Emulator boot completed
+[2026-03-12 19:00:23] Stabilizing emulator for 5s
+[2026-03-12 19:00:28] Waking and unlocking emulator
+[2026-03-12 19:00:31] Emulator unlock sequence done
+[2026-03-12 19:00:31] Starting Appium on 127.0.0.1:4723
+[2026-03-12 19:00:31] Appium pid=17512 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_190005.log
+[2026-03-12 19:00:31] Waiting for Appium... 60s left
+[2026-03-12 19:00:33] Stabilizing Appium for 5s
+[2026-03-12 19:00:38] Appium ready
+[2026-03-12 19:00:38] Verifying emulator device state before Python launch
+[2026-03-12 19:00:38] Emulator state is online: device
+[2026-03-12 19:00:38] Launching python automation
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: window=Evening, slot=08:00 - 09:00, court=Lawn Tennis Parcel 5
+Selected window/slot/court: Evening | 08:00 - 09:00 | Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 2 persons)
+Parsed capacity: 2
+Screenshot saved: screenshots/failure/flow_exception_20260312_190112.png
+[FAILED] Capacity 2 is below required minimum 3 (after 33.82s)
+[2026-03-12 19:01:13] Shutting down emulator: emulator-5554
+[2026-03-12 19:01:13] Shutting down Appium: pid=17512
+[2026-03-12 19:01:14] Total run time: 68s (00:01:08)
+[2026-03-12 19:01:14] Lock removed

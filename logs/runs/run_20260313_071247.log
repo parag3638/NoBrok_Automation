@@ -1,0 +1,30 @@
+[2026-03-13 07:12:47] Run started
+[2026-03-13 07:12:47] Run log: /Users/predator258/NoBrok_Automation/logs/runs/run_20260313_071247.log
+[2026-03-13 07:12:47] Lock acquired
+[2026-03-13 07:12:47] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-13 07:12:47] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-13 07:12:55] Emulator detected: emulator-5554
+[2026-03-13 07:12:55] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-13 07:12:55] Waiting for boot completion
+[2026-03-13 07:12:59] Emulator boot completed
+[2026-03-13 07:13:00] Stabilizing emulator for 5s
+[2026-03-13 07:13:05] Waking and unlocking emulator
+[2026-03-13 07:13:07] Emulator unlock sequence done
+[2026-03-13 07:13:07] Starting Appium on 127.0.0.1:4723
+[2026-03-13 07:13:07] Appium pid=22213 log=/Users/predator258/NoBrok_Automation/logs/appium/appium_20260313_071247.log
+[2026-03-13 07:13:07] Waiting for Appium... 60s left
+[2026-03-13 07:13:09] Stabilizing Appium for 5s
+[2026-03-13 07:13:14] Appium ready
+[2026-03-13 07:13:14] Verifying emulator device state before Python launch
+[2026-03-13 07:13:14] Emulator state is online: device
+[2026-03-13 07:13:14] Launching python automation
+Unavailable combo: window=Evening, slot=08:00 - 09:00, court=Lawn Tennis Parcel 5
+Unavailable combo: window=Evening, slot=08:00 - 09:00, court=Lawn Tennis Parcel 6
+Unavailable combo: window=Evening, slot=09:00 - 10:00, court=Lawn Tennis Parcel 5
+Unavailable combo: window=Evening, slot=09:00 - 10:00, court=Lawn Tennis Parcel 6
+Screenshot saved: screenshots/failure/flow_exception_20260313_071404.png
+[FAILED] No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] (after 49.92s)
+[2026-03-13 07:14:06] Shutting down emulator: emulator-5554
+[2026-03-13 07:14:06] Shutting down Appium: pid=22213
+[2026-03-13 07:14:07] Total run time: 79s (00:01:19)
+[2026-03-13 07:14:07] Lock removed

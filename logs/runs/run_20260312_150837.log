@@ -1,0 +1,35 @@
+[2026-03-12 15:08:37] Run started
+[2026-03-12 15:08:37] Run log: /Users/predator258/nobrokerhood/logs/runs/run_20260312_150837.log
+[2026-03-12 15:08:37] Lock acquired
+[2026-03-12 15:08:37] ANDROID_HOME=/Users/predator258/Library/Android/sdk
+[2026-03-12 15:08:37] No running emulator detected. Starting AVD: Pixel_7
+[2026-03-12 15:08:49] Emulator detected: emulator-5554
+[2026-03-12 15:08:49] ANDROID_SERIAL pinned to emulator-5554
+[2026-03-12 15:08:49] Waiting for boot completion
+[2026-03-12 15:08:53] Emulator boot completed
+[2026-03-12 15:08:53] Stabilizing emulator for 5s
+[2026-03-12 15:08:58] Waking and unlocking emulator
+[2026-03-12 15:09:01] Emulator unlock sequence done
+[2026-03-12 15:09:01] Starting Appium on 127.0.0.1:4723
+[2026-03-12 15:09:01] Appium pid=12994 log=/Users/predator258/nobrokerhood/logs/appium/appium_20260312_150837.log
+[2026-03-12 15:09:01] Waiting for Appium... 60s left
+[2026-03-12 15:09:03] Stabilizing Appium for 5s
+[2026-03-12 15:09:08] Appium ready
+[2026-03-12 15:09:08] Verifying emulator device state before Python launch
+[2026-03-12 15:09:08] Emulator state is online: device
+[2026-03-12 15:09:08] Launching python automation
+Unavailable combo: window=Evening, slot=08:00 - 09:00, court=Lawn Tennis Parcel 5
+Unavailable combo: window=Evening, slot=08:00 - 09:00, court=Lawn Tennis Parcel 6
+Unavailable combo: window=Evening, slot=09:00 - 10:00, court=Lawn Tennis Parcel 5
+Unavailable combo: window=Evening, slot=09:00 - 10:00, court=Lawn Tennis Parcel 6
+Dismissed unavailable-slot popup: Got it
+Unavailable combo: window=Morning, slot=08:00 - 09:00, court=Lawn Tennis Parcel 5
+Selected window/slot/court: Morning | 08:00 - 09:00 | Lawn Tennis Parcel 6
+Capacity label: (Capacity remaining: 2 persons)
+Parsed capacity: 2
+Screenshot saved: screenshots/failure/flow_exception_20260312_151009.png
+[FAILED] Capacity 2 is below required minimum 3 (after 61.18s)
+[2026-03-12 15:10:11] Shutting down emulator: emulator-5554
+[2026-03-12 15:10:11] Shutting down Appium: pid=12994
+[2026-03-12 15:10:12] Total run time: 94s (00:01:34)
+[2026-03-12 15:10:12] Lock removed

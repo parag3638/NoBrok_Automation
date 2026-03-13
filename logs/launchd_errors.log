@@ -1,0 +1,6 @@
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+bash: /Users/predator258/Desktop/Hack_X/nobrokerhood/scripts/launchd_caffeinate_wrapper.sh: Operation not permitted
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+chdir: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+bash: /Users/predator258/Desktop/Hack_X/nobrokerhood/run.sh: Operation not permitted
