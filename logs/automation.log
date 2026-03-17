@@ -231,3 +231,69 @@ NoSuchElementError: An element could not be located on the page using the given 
     at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
 2026-03-13 07:14:05 | step=timing | status=failure | slot=- | details=Elapsed seconds: 49.92
 2026-03-13 07:14:05 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 49.92s
+2026-03-17 17:49:10 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 17:49:13 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 17:49:13 | step=run_booking_flow | status=success | slot=- | details=Flow started
+2026-03-17 17:49:30 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 17:49:38 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 17:49:46 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 17:49:53 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 17:49:54 | step=timing | status=failure | slot=- | details=Elapsed seconds: 49.16
+2026-03-17 17:49:54 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 49.16s
+2026-03-17 18:04:03 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 18:04:04 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 18:04:04 | step=run_booking_flow | status=success | slot=- | details=Flow started
+2026-03-17 18:04:22 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 18:04:29 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 18:04:36 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 18:04:43 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 18:04:43 | step=timing | status=failure | slot=- | details=Elapsed seconds: 45.93
+2026-03-17 18:04:43 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 45.93s
