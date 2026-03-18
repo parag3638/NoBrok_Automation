@@ -297,3 +297,299 @@ NoSuchElementError: An element could not be located on the page using the given 
     at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
 2026-03-17 18:04:43 | step=timing | status=failure | slot=- | details=Elapsed seconds: 45.93
 2026-03-17 18:04:43 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 45.93s
+2026-03-17 18:22:40 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 18:22:43 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 18:22:43 | step=run_booking_flow | status=success | slot=- | details=Flow started
+2026-03-17 18:23:04 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 18:23:11 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 18:23:19 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 18:23:25 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-17 18:23:26 | step=timing | status=failure | slot=- | details=Elapsed seconds: 51.91
+2026-03-17 18:23:26 | step=main | status=failure | slot=- | details=Exception: No preferred window/slot/court combo found. Mapping={'Evening': ['08:00 - 09:00', '09:00 - 10:00']}, Courts=['Lawn Tennis Parcel 5', 'Lawn Tennis Parcel 6'] | after 51.91s
+2026-03-17 18:55:39 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 18:55:40 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 18:55:41 | step=timing | status=failure | slot=- | details=Elapsed seconds: 8.72
+2026-03-17 18:55:41 | step=main | status=failure | slot=- | details=AttributeError: module 'config' has no attribute 'PREFERRED_SLOTS_BY_WINDOW' | after 8.72s
+2026-03-17 20:20:29 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 20:20:30 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 20:20:30 | step=timing | status=failure | slot=- | details=Elapsed seconds: 6.50
+2026-03-17 20:20:30 | step=main | status=failure | slot=- | details=AttributeError: module 'config' has no attribute 'PREFERRED_SLOTS_BY_WINDOW' | after 6.50s
+2026-03-17 20:24:18 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 20:24:20 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 20:24:29 | step=race | status=success | slot=- | details=Prepared booking page for release=test+90s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 20:24:29 | step=race_wait | status=success | slot=- | details=release=test+90s target=2026-03-17 20:25:43 wait_sec=74.4
+2026-03-17 20:29:08 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 20:29:09 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 20:29:20 | step=race | status=success | slot=- | details=Prepared booking page for release=test+90s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 20:29:20 | step=race_wait | status=success | slot=- | details=release=test+90s target=2026-03-17 20:30:32 wait_sec=72.4
+2026-03-17 20:33:45 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 20:33:46 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 20:33:56 | step=race | status=success | slot=- | details=Prepared booking page for release=test+90s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 20:33:56 | step=race_wait | status=success | slot=- | details=release=test+90s target=2026-03-17 20:35:10 wait_sec=74.1
+2026-03-17 20:34:11 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-17 20:34:26 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-17 20:34:41 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-17 20:34:56 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-17 20:35:14 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:35:14 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:35:18 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:35:18 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:35:20 | step=timing | status=failure | slot=- | details=Elapsed seconds: 100.36
+2026-03-17 20:35:20 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['08:00 - 09:00']} | after 100.36s
+2026-03-17 20:37:01 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 20:37:03 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 20:37:14 | step=race | status=success | slot=- | details=Prepared booking page for release=test+90s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 20:37:14 | step=race_wait | status=success | slot=- | details=release=test+90s target=2026-03-17 20:38:26 wait_sec=71.6
+2026-03-17 20:37:29 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-17 20:37:44 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-17 20:37:59 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-17 20:38:14 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-17 20:38:31 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:38:31 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:38:34 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:38:34 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:38:37 | step=timing | status=failure | slot=- | details=Elapsed seconds: 101.40
+2026-03-17 20:38:37 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['08:00 - 09:00']} | after 101.40s
+2026-03-17 20:40:08 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 20:40:09 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 20:40:18 | step=race | status=success | slot=- | details=Prepared booking page for release=test+10s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 20:40:18 | step=race_wait | status=success | slot=- | details=release=test+10s target=2026-03-17 20:40:12 wait_sec=0.0
+2026-03-17 20:40:23 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:40:23 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:40:27 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:40:27 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:40:30 | step=timing | status=failure | slot=- | details=Elapsed seconds: 26.96
+2026-03-17 20:40:30 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['08:00 - 09:00']} | after 26.96s
+2026-03-17 20:43:24 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 20:43:26 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 20:43:35 | step=race | status=success | slot=- | details=Prepared booking page for release=test+10s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 20:43:35 | step=race_wait | status=success | slot=- | details=release=test+10s target=2026-03-17 20:43:29 wait_sec=0.0
+2026-03-17 20:43:40 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:43:40 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:43:44 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:43:44 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:43:47 | step=timing | status=failure | slot=- | details=Elapsed seconds: 27.18
+2026-03-17 20:43:47 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['08:00 - 09:00']} | after 27.18s
+2026-03-17 20:51:07 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 20:51:09 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 20:51:18 | step=race | status=success | slot=- | details=Prepared booking page for release=test+10s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 20:51:18 | step=race_wait | status=success | slot=- | details=release=test+10s target=2026-03-17 20:51:12 wait_sec=0.0
+2026-03-17 20:51:23 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:51:23 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:51:27 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:51:27 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:51:30 | step=timing | status=failure | slot=- | details=Elapsed seconds: 27.51
+2026-03-17 20:51:30 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['08:00 - 09:00']} | after 27.51s
+2026-03-17 20:52:34 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 20:52:36 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 20:52:46 | step=race | status=success | slot=- | details=Prepared booking page for release=test+10s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 20:52:46 | step=race_wait | status=success | slot=- | details=release=test+10s target=2026-03-17 20:52:39 wait_sec=0.0
+2026-03-17 20:52:50 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:52:50 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:52:54 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 20:52:54 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 20:52:56 | step=timing | status=failure | slot=- | details=Elapsed seconds: 26.92
+2026-03-17 20:52:56 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['08:00 - 09:00']} | after 26.92s
+2026-03-17 21:28:02 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 21:28:04 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 21:28:14 | step=race | status=success | slot=- | details=Prepared booking page for release=test+30s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 21:28:14 | step=race_wait | status=success | slot=- | details=release=test+30s target=2026-03-17 21:28:27 wait_sec=13.6
+2026-03-17 21:28:32 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 21:28:32 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 21:28:36 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 21:28:36 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 21:28:38 | step=timing | status=failure | slot=- | details=Elapsed seconds: 41.05
+2026-03-17 21:28:38 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['08:00 - 09:00']} | after 41.05s
+2026-03-17 21:34:42 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 21:34:44 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 21:34:53 | step=race | status=success | slot=- | details=Prepared booking page for release=test+20s target_slot=08:00 - 09:00 hold_day=Today
+2026-03-17 21:34:53 | step=race_wait | status=success | slot=- | details=release=test+20s target=2026-03-17 21:34:57 wait_sec=3.7
+2026-03-17 21:35:02 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 21:35:02 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 21:35:05 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 21:35:05 | step=select_slot_court | status=failure | slot=08:00 - 09:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6 | Exception: Slot 08:00 - 09:00 is unavailable
+2026-03-17 21:35:08 | step=timing | status=failure | slot=- | details=Elapsed seconds: 30.71
+2026-03-17 21:35:08 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['08:00 - 09:00']} | after 30.71s
+2026-03-17 21:36:53 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-17 21:36:54 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-17 21:37:04 | step=race | status=success | slot=- | details=Prepared booking page for release=test+20s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-17 21:37:04 | step=race_wait | status=success | slot=- | details=release=test+20s target=2026-03-17 21:37:08 wait_sec=3.8
+2026-03-17 21:37:13 | step=slot_popup | status=success | slot=- | details=Clicked Got it
+2026-03-17 21:37:13 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 5 | Exception: Slot 09:00 - 10:00 is unavailable
+2026-03-17 21:37:16 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 4 persons) | parsed=4
+2026-03-17 21:37:16 | step=select_slot_court | status=success | slot=09:00 - 10:00 | details=Window=Evening | Court=Lawn Tennis Parcel 6
+2026-03-17 21:37:32 | step=booking_confirmation | status=failure | slot=09:00 - 10:00 | details=No confirmation text
+2026-03-17 21:37:33 | step=timing | status=failure | slot=09:00 - 10:00 | details=Elapsed seconds: 44.63
+2026-03-17 21:37:33 | step=main | status=failure | slot=09:00 - 10:00 | details=Exception: Booking confirmation message not detected. | after 44.63s
+2026-03-18 01:10:44 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 01:10:47 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 01:10:58 | step=race | status=success | slot=- | details=Prepared booking page for release=19:00 target_slot=08:00 - 09:00 hold_day=Today
+2026-03-18 01:10:58 | step=race_wait | status=success | slot=- | details=release=19:00 target=2026-03-18 19:00:00 wait_sec=64141.6
+2026-03-18 01:11:13 | step=race_keepalive | status=success | slot=- | details=package=com.google.android.apps.nexuslauncher
+2026-03-18 01:11:28 | step=race_keepalive | status=success | slot=- | details=package=com.google.android.apps.nexuslauncher
+2026-03-18 01:11:43 | step=race_keepalive | status=success | slot=- | details=package=com.google.android.apps.nexuslauncher
+2026-03-18 01:11:58 | step=race_keepalive | status=success | slot=- | details=package=com.google.android.apps.nexuslauncher
+2026-03-18 01:12:14 | step=race_keepalive | status=success | slot=- | details=package=com.google.android.apps.nexuslauncher
+2026-03-18 01:12:29 | step=race_keepalive | status=success | slot=- | details=package=com.google.android.apps.nexuslauncher
+2026-03-18 01:12:44 | step=race_keepalive | status=success | slot=- | details=package=com.google.android.apps.nexuslauncher
+2026-03-18 01:12:59 | step=race_keepalive | status=success | slot=- | details=package=com.google.android.apps.nexuslauncher
+2026-03-18 01:14:01 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 01:14:02 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 01:14:11 | step=race | status=success | slot=- | details=Prepared booking page for release=test+10s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 01:14:11 | step=race_wait | status=success | slot=- | details=release=test+10s target=2026-03-18 01:14:05 wait_sec=0.0
+2026-03-18 01:14:41 | step=timing | status=failure | slot=- | details=Elapsed seconds: 45.06
+2026-03-18 01:14:41 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['09:00 - 10:00']} | after 45.06s
+2026-03-18 10:43:50 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 10:43:52 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 10:44:02 | step=race | status=success | slot=- | details=Prepared booking page for release=test+10s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 10:44:02 | step=race_wait | status=success | slot=- | details=release=test+10s target=2026-03-18 10:43:55 wait_sec=0.0
+2026-03-18 10:44:07 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-18 10:44:07 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-18 10:44:13 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-18 10:44:14 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-18 10:44:16 | step=timing | status=failure | slot=- | details=Elapsed seconds: 31.13
+2026-03-18 10:44:16 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['09:00 - 10:00']} | after 31.13s
+2026-03-18 10:46:17 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 10:46:19 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 10:46:29 | step=race | status=success | slot=- | details=Prepared booking page for release=test+10s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 10:46:29 | step=race_wait | status=success | slot=- | details=release=test+10s target=2026-03-18 10:46:21 wait_sec=0.0
+2026-03-18 10:46:33 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 4 persons) | parsed=4
+2026-03-18 10:46:33 | step=select_slot_court | status=success | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5
+2026-03-18 10:46:36 | step=timing | status=success | slot=09:00 - 10:00 | details=Elapsed seconds: 24.96
+2026-03-18 10:46:36 | step=main | status=success | slot=09:00 - 10:00 | details=Race flow completed in 24.96s | release=test+10s | court=Lawn Tennis Parcel 5 | confirmation_required=False
+2026-03-18 10:52:09 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 10:52:11 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 10:52:20 | step=race | status=success | slot=- | details=Prepared booking page for release=test+30s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 10:52:20 | step=race_wait | status=success | slot=- | details=release=test+30s target=2026-03-18 10:52:33 wait_sec=12.3
+2026-03-18 10:52:37 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-18 10:52:37 | step=select_slot_court | status=success | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6
+2026-03-18 10:52:40 | step=timing | status=success | slot=09:00 - 10:00 | details=Elapsed seconds: 37.01
+2026-03-18 10:52:40 | step=main | status=success | slot=09:00 - 10:00 | details=Race flow completed in 37.01s | release=test+30s | court=Lawn Tennis Parcel 6 | confirmation_required=False
+2026-03-18 10:53:26 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 10:53:27 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 10:53:37 | step=race | status=success | slot=- | details=Prepared booking page for release=test+30s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 10:53:37 | step=race_wait | status=success | slot=- | details=release=test+30s target=2026-03-18 10:53:50 wait_sec=13.4
+2026-03-18 10:53:54 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-18 10:53:54 | step=capacity_check | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=3
+2026-03-18 10:53:56 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-18 10:53:59 | step=timing | status=failure | slot=- | details=Elapsed seconds: 38.87
+2026-03-18 10:53:59 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Morning': ['09:00 - 10:00']} | after 38.87s
+2026-03-18 11:01:49 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 11:01:51 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 11:02:03 | step=race | status=success | slot=- | details=Prepared booking page for release=test+30s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 11:02:03 | step=race_wait | status=success | slot=- | details=release=test+30s target=2026-03-18 11:02:13 wait_sec=10.8
+2026-03-18 11:02:17 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-18 11:02:17 | step=select_slot_court | status=success | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6
+2026-03-18 11:02:20 | step=timing | status=success | slot=09:00 - 10:00 | details=Elapsed seconds: 37.00
+2026-03-18 11:02:20 | step=main | status=success | slot=09:00 - 10:00 | details=Race flow completed in 37.00s | release=test+30s | court=Lawn Tennis Parcel 6 | confirmation_required=False
+2026-03-18 11:05:12 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 11:05:13 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 11:05:24 | step=race | status=success | slot=- | details=Prepared booking page for release=test+30s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 11:05:24 | step=race_wait | status=success | slot=- | details=release=test+30s target=2026-03-18 11:05:34 wait_sec=10.4
+2026-03-18 11:05:38 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-18 11:05:38 | step=capacity_check | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=2
+2026-03-18 11:05:41 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-18 11:05:43 | step=timing | status=failure | slot=- | details=Elapsed seconds: 38.61
+2026-03-18 11:05:43 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Morning': ['09:00 - 10:00']} | after 38.61s
+2026-03-18 11:08:12 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 11:08:14 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 11:08:24 | step=race | status=success | slot=- | details=Prepared booking page for release=test+20s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 11:08:24 | step=race_wait | status=success | slot=- | details=release=test+20s target=2026-03-18 11:08:26 wait_sec=1.8
+2026-03-18 11:08:31 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-18 11:08:31 | step=capacity_check | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=2
+2026-03-18 11:08:33 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-18 11:08:35 | step=timing | status=failure | slot=- | details=Elapsed seconds: 28.89
+2026-03-18 11:08:35 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Morning': ['09:00 - 10:00']} | after 28.89s
+2026-03-18 11:09:29 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 11:09:30 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 11:09:40 | step=race | status=success | slot=- | details=Prepared booking page for release=test+20s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 11:09:40 | step=race_wait | status=success | slot=- | details=release=test+20s target=2026-03-18 11:09:43 wait_sec=3.3
+2026-03-18 11:09:47 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-18 11:09:47 | step=capacity_check | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=2
+2026-03-18 11:09:49 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5 | TimeoutException: Message: 
+Stacktrace:
+NoSuchElementError: An element could not be located on the page using the given search parameters.
+    at AndroidUiautomator2Driver.findElOrEls (/Users/predator258/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/find.js:62:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.findElOrElsWithProcessing (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:12:16)
+    at async AndroidUiautomator2Driver.findElement (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/basedriver/commands/find.js:27:16)
+2026-03-18 11:09:52 | step=timing | status=failure | slot=- | details=Elapsed seconds: 28.57
+2026-03-18 11:09:52 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Morning': ['09:00 - 10:00']} | after 28.57s
+2026-03-18 11:48:15 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 11:48:17 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 11:48:27 | step=race | status=success | slot=- | details=Prepared booking page for release=test+20s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 11:48:27 | step=race_wait | status=success | slot=- | details=release=test+20s target=2026-03-18 11:48:29 wait_sec=2.0
+2026-03-18 11:48:34 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 1 person) | parsed=1
+2026-03-18 11:48:34 | step=capacity_check | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=2
+2026-03-18 11:48:34 | step=select_slot_court | status=failure | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 6 | capacity=1 < min=2
+2026-03-18 11:48:36 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 4 persons) | parsed=4
+2026-03-18 11:48:36 | step=select_slot_court | status=success | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5
+2026-03-18 11:48:39 | step=timing | status=success | slot=09:00 - 10:00 | details=Elapsed seconds: 30.20
+2026-03-18 11:48:39 | step=main | status=success | slot=09:00 - 10:00 | details=Race flow completed in 30.20s | release=test+20s | court=Lawn Tennis Parcel 5 | confirmation_required=False
+2026-03-18 11:50:17 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 11:50:19 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 11:50:29 | step=race | status=success | slot=- | details=Prepared booking page for release=test+20s target_slot=09:00 - 10:00 hold_day=Today
+2026-03-18 11:50:29 | step=race_wait | status=success | slot=- | details=release=test+20s target=2026-03-18 11:50:31 wait_sec=2.4
+2026-03-18 11:50:36 | step=capacity_check | status=success | slot=- | details=Capacity label evaluated: (Capacity remaining: 4 persons) | parsed=4
+2026-03-18 11:50:36 | step=select_slot_court | status=success | slot=09:00 - 10:00 | details=Window=Morning | Court=Lawn Tennis Parcel 5
+2026-03-18 11:50:39 | step=timing | status=success | slot=09:00 - 10:00 | details=Elapsed seconds: 27.58
+2026-03-18 11:50:39 | step=main | status=success | slot=09:00 - 10:00 | details=Race flow completed in 27.58s | release=test+20s | court=Lawn Tennis Parcel 5 | confirmation_required=False
+2026-03-18 11:57:29 | step=app_foreground | status=success | slot=- | details=App is in foreground
+2026-03-18 11:57:31 | step=session_guard | status=success | slot=- | details=Active session detected
+2026-03-18 11:57:41 | step=race | status=success | slot=- | details=Prepared booking page for release=12:00 target_slot=08:00 - 09:00 hold_day=Today
+2026-03-18 11:57:41 | step=race_wait | status=success | slot=- | details=release=12:00 target=2026-03-18 12:00:00 wait_sec=138.5
+2026-03-18 11:57:56 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-18 11:58:11 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-18 11:58:26 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-18 11:58:41 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-18 11:58:57 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-18 11:59:12 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-18 11:59:27 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-18 11:59:42 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-18 11:59:57 | step=race_keepalive | status=success | slot=- | details=package=com.app.nobrokerhood
+2026-03-18 12:00:04 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 5 | empty_state
+2026-03-18 12:00:05 | step=select_slot_court | status=failure | slot=- | details=Window=Evening | Court=Lawn Tennis Parcel 6 | empty_state
+2026-03-18 12:00:09 | step=timing | status=failure | slot=- | details=Elapsed seconds: 165.64
+2026-03-18 12:00:09 | step=main | status=failure | slot=- | details=Exception: Target slot did not become bookable before timeout. Mapping={'Evening': ['08:00 - 09:00']} | after 165.64s

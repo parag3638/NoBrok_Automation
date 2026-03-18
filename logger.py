@@ -32,9 +32,13 @@ def capture_screenshot(driver, status, label):
     safe_label = re.sub(r"[^a-zA-Z0-9_-]+", "_", label).strip("_") or "snapshot"
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     path = target_dir / f"{safe_label}_{timestamp}.png"
-    driver.save_screenshot(str(path))
-    print(f"Screenshot saved: {path}")
-    return path
+    try:
+        driver.save_screenshot(str(path))
+        print(f"Screenshot saved: {path}")
+        return path
+    except Exception as exc:
+        print(f"Screenshot skipped for {safe_label}: {type(exc).__name__}: {exc}")
+        return None
 
 
 def write_alert(message, alert_file):
