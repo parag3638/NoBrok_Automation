@@ -29,6 +29,7 @@ PYTHON_STAGE_START_EPOCH=""
 : "${ADB_CMD_TIMEOUT_SEC:=12}"
 : "${ADB_STABLE_TIMEOUT_SEC:=45}"
 : "${ADB_STABLE_SUCCESS_COUNT:=3}"
+: "${WRAPPER_PREP_CUTOFF_SEC:=}"
 
 mkdir -p \
   "$LOG_DIR" \
@@ -148,6 +149,32 @@ require_cmd curl
 require_cmd appium
 require_cmd lsof
 
+load_config_value() {
+  local attr="$1"
+  python3 - "$attr" <<'PY'
+import importlib
+import sys
+
+attr = sys.argv[1]
+config = importlib.import_module("config")
+value = getattr(config, attr, None)
+if value is None:
+    print("")
+else:
+    print(value)
+PY
+}
+
+if [[ -z "${WRAPPER_PREP_CUTOFF_SEC:-}" ]]; then
+  WRAPPER_PREP_CUTOFF_SEC="$(load_config_value "RACE_WRAPPER_PREP_CUTOFF_SEC")"
+fi
+
+PREP_DEADLINE_EPOCH=""
+if [[ -n "${WRAPPER_PREP_CUTOFF_SEC:-}" ]]; then
+  PREP_DEADLINE_EPOCH=$((SCRIPT_START_EPOCH + WRAPPER_PREP_CUTOFF_SEC))
+  echo "[$(date +"%F %T")] Wrapper prep cutoff: ${WRAPPER_PREP_CUTOFF_SEC}s"
+fi
+
 case "$MODE" in
   race)
     ;;
@@ -173,6 +200,23 @@ run_with_timeout() {
   else
     "$@"
   fi
+}
+
+abort_if_wrapper_prep_too_slow() {
+  local stage="$1"
+  if [[ -z "${PREP_DEADLINE_EPOCH:-}" ]]; then
+    return 0
+  fi
+
+  local now elapsed_sec
+  now="$(date +%s)"
+  if (( now < PREP_DEADLINE_EPOCH )); then
+    return 0
+  fi
+
+  elapsed_sec=$((now - SCRIPT_START_EPOCH))
+  echo "[$(date +"%F %T")] Wrapper prep cutoff hit after ${elapsed_sec}s while ${stage}. Aborting run."
+  exit 1
 }
 
 adb_shell_probe() {
@@ -228,6 +272,7 @@ if [[ -z "$EMULATOR_SERIAL" ]]; then
 
   deadline=$((SECONDS + EMULATOR_BOOT_TIMEOUT_SEC))
   while [[ $SECONDS -lt $deadline ]]; do
+    abort_if_wrapper_prep_too_slow "waiting for emulator to appear in adb"
     EMULATOR_SERIAL="$(get_running_emulator || true)"
     if [[ -n "$EMULATOR_SERIAL" ]]; then
       break
@@ -247,9 +292,14 @@ echo "[$(date +"%F %T")] ANDROID_SERIAL pinned to $ANDROID_SERIAL"
 
 echo "[$(date +"%F %T")] Waiting for boot completion"
 
+get_boot_completed_prop() {
+  run_with_timeout "$ADB_CMD_TIMEOUT_SEC" adb -s "$EMULATOR_SERIAL" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r'
+}
+
 deadline=$((SECONDS + EMULATOR_BOOT_TIMEOUT_SEC))
 while [[ $SECONDS -lt $deadline ]]; do
-  boot="$(adb -s "$EMULATOR_SERIAL" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')"
+  abort_if_wrapper_prep_too_slow "waiting for emulator boot completion"
+  boot="$(get_boot_completed_prop || true)"
   if [[ "$boot" == "1" ]]; then
     echo "[$(date +"%F %T")] Emulator boot completed"
     break
@@ -257,7 +307,7 @@ while [[ $SECONDS -lt $deadline ]]; do
   sleep 2
 done
 
-if [[ "$(adb -s "$EMULATOR_SERIAL" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" != "1" ]]; then
+if [[ "$(get_boot_completed_prop || true)" != "1" ]]; then
   echo "[$(date +"%F %T")] Emulator did not finish booting in time"
   exit 1
 fi
@@ -327,6 +377,7 @@ else
   deadline=$((SECONDS + APPIUM_START_TIMEOUT_SEC))
   next_progress=$SECONDS
   until appium_up || [[ $SECONDS -ge $deadline ]]; do
+    abort_if_wrapper_prep_too_slow "waiting for Appium to become ready"
     if ! ps -p "$APPIUM_PID" >/dev/null 2>&1; then
       echo "[$(date +"%F %T")] Appium process exited early (pid=$APPIUM_PID)."
       if [[ -f "$APPIUM_LOG" ]]; then
@@ -360,12 +411,14 @@ echo "[$(date +"%F %T")] Appium ready"
 
 # Final adb readiness gate to reduce "device offline" session failures.
 echo "[$(date +"%F %T")] Verifying emulator adb stability before Python launch"
+abort_if_wrapper_prep_too_slow "verifying emulator adb stability"
 if ! wait_for_stable_adb; then
   echo "[$(date +"%F %T")] Emulator adb did not become stable in time (state=$(adb -s "$EMULATOR_SERIAL" get-state 2>/dev/null || true)). Exiting."
   exit 1
 fi
 
 # 4) Run python booking flow (its own logs/screenshots still apply).
+abort_if_wrapper_prep_too_slow "preparing to launch Python automation"
 echo "[$(date +"%F %T")] Launching python automation"
 cd "$PROJECT_DIR"
 PYTHON_STAGE_START_EPOCH="$(date +%s)"

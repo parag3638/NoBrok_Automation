@@ -10,6 +10,8 @@ SESSION_NEW_COMMAND_TIMEOUT_SEC = 300
 WAIT_SEC = 12
 CLICK_RETRIES = 2
 RETRY_DELAY_SEC = 1
+HOME_NAV_RETRIES = 3
+HOME_OVERLAY_DISMISS_WAIT_SEC = 0.5
 PER_SLOT_TIMEOUT_SEC = 6
 EMPTY_STATE_RECHECK_ENABLED = True
 EMPTY_STATE_RECHECK_SEC = 0.25
@@ -62,6 +64,7 @@ RELEASE_SLOT_MAP = {
 # fire after that many seconds instead of waiting for the next release in RELEASE_SLOT_MAP.
 # Set it back to None for scheduled production runs.
 # RACE_TEST_TRIGGER_AFTER_SEC = 20
+
 RACE_TEST_TRIGGER_AFTER_SEC = None
 # RACE_TEST_TRIGGER_AFTER_SEC = 20
 RACE_TEST_PROFILE = {
@@ -76,6 +79,9 @@ RACE_FINAL_WINDOW_SEC = 10
 RACE_LAST_MILE_WINDOW_SEC = 3
 RACE_LAST_MILE_POLL_INTERVAL_SEC = 0.25
 RACE_REFRESH_RETRY_TIMEOUT_SEC = 8
+# Abort the shell wrapper if emulator/Appium prep takes too long before Python starts.
+# Set to None to disable this cutoff.
+RACE_WRAPPER_PREP_CUTOFF_SEC = 90
 RACE_PROGRESS_LOG_INTERVAL_SEC = 5
 RACE_SESSION_KEEPALIVE_INTERVAL_SEC = 15
 RACE_SLOT_TIMEOUT_SEC = 0.75
@@ -87,4 +93,8 @@ RACE_REQUIRE_CONFIRMATION = False
 
 
 FAMILY_MEMBERS = ["Parag", "Sayel Chakraborty", "Manav Grover"]
-MIN_CAPACITY = 2
+MIN_CAPACITY = 3
+
+
+
+#Only Specific Days, Mobile in the background

@@ -52,14 +52,13 @@ def wait_present(driver, locator, timeout=config.WAIT_SEC):
     )
 
 
-def open_app(launch_app=True):
+def open_app():
     options = UiAutomator2Options()
     options.platform_name = config.PLATFORM_NAME
     options.device_name = config.DEVICE_NAME
     options.automation_name = config.AUTOMATION_NAME
-    if launch_app:
-        options.app_package = config.PACKAGE
-        options.app_activity = config.ACTIVITY
+    options.app_package = config.PACKAGE
+    options.app_activity = config.ACTIVITY
     options.no_reset = config.NO_RESET
     options.set_capability("newCommandTimeout", config.SESSION_NEW_COMMAND_TIMEOUT_SEC)
     device_udid = os.getenv("ANDROID_SERIAL")
@@ -68,14 +67,13 @@ def open_app(launch_app=True):
     return webdriver.Remote(config.APPIUM_URL, options=options)
 
 
-def ensure_app_in_foreground(driver, prefer_existing=False):
-    if prefer_existing:
-        try:
-            if driver.current_package == config.PACKAGE:
-                write_log("app_foreground", "success", details="App already in foreground")
-                return
-        except Exception:
-            pass
+def ensure_app_in_foreground(driver):
+    try:
+        if driver.current_package == config.PACKAGE:
+            write_log("app_foreground", "success", details="App already in foreground")
+            return
+    except Exception:
+        pass
 
     for _ in range(config.APP_FOREGROUND_RETRIES):
         try:
@@ -150,13 +148,6 @@ def close_app(driver):
         pass
 
 
-def release_driver(driver):
-    try:
-        driver.quit()
-    except Exception:
-        pass
-
-
 def keep_session_alive(driver):
     try:
         current_package = driver.current_package
@@ -189,12 +180,110 @@ def click_element_with_fallback(driver, element):
         driver.execute_script("mobile: clickGesture", {"elementId": element.id})
 
 
+def is_home_overlay_visible(driver):
+    overlay_markers = [
+        (
+            AppiumBy.ANDROID_UIAUTOMATOR,
+            'new UiSelector().textContains("Looking to Sell Something")',
+        ),
+        (
+            AppiumBy.ANDROID_UIAUTOMATOR,
+            'new UiSelector().textContains("society Marketplace")',
+        ),
+        (
+            AppiumBy.ANDROID_UIAUTOMATOR,
+            'new UiSelector().text("List Now")',
+        ),
+    ]
+    return any(driver.find_elements(*locator) for locator in overlay_markers)
+
+
+def dismiss_home_overlay(driver):
+    if not is_home_overlay_visible(driver):
+        return False
+
+    dismiss_actions = [
+        (
+            "close_button",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().descriptionContains("Close")',
+            ),
+        ),
+        (
+            "close_text",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().text("Close")',
+            ),
+        ),
+        (
+            "maybe_x_text",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().text("×")',
+            ),
+        ),
+        (
+            "maybe_x_desc",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().description("×")',
+            ),
+        ),
+    ]
+
+    for action_name, locator in dismiss_actions:
+        try:
+            safe_click(
+                driver,
+                locator,
+                retries=1,
+                timeout=1,
+                retry_delay=0,
+            )
+            time.sleep(config.HOME_OVERLAY_DISMISS_WAIT_SEC)
+            if not is_home_overlay_visible(driver):
+                write_log("home_overlay", "success", details=f"Dismissed via {action_name}")
+                return True
+        except Exception:
+            pass
+
+    try:
+        driver.back()
+        time.sleep(config.HOME_OVERLAY_DISMISS_WAIT_SEC)
+        if not is_home_overlay_visible(driver):
+            write_log("home_overlay", "success", details="Dismissed via Android back")
+            return True
+    except Exception:
+        pass
+
+    write_log("home_overlay", "failure", details="Overlay detected but not dismissed")
+    return False
+
+
 def go_to_amenities(driver):
-    wait_click(driver, (AppiumBy.ACCESSIBILITY_ID, "Society"))
-    wait_click(
-        driver,
-        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Amenities")')
-    )
+    last_error = None
+    society_locators = [
+        (AppiumBy.ACCESSIBILITY_ID, "Society"),
+        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Society")'),
+    ]
+
+    for _ in range(config.HOME_NAV_RETRIES):
+        dismiss_home_overlay(driver)
+        for locator in society_locators:
+            try:
+                wait_click(driver, locator)
+                wait_click(
+                    driver,
+                    (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Amenities")')
+                )
+                return
+            except Exception as exc:
+                last_error = exc
+        dismiss_home_overlay(driver)
+
+    raise last_error or Exception("Could not navigate to Amenities from the home screen")
 
 
 def open_booking_screen(driver, sport_name):
@@ -217,21 +306,6 @@ def select_sport(driver, sport_name):
 
 def tap_book(driver):
     wait_click(driver, (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Book")'))
-
-
-def select_day(driver, day_name):
-    wait_click(
-        driver,
-        (AppiumBy.ANDROID_UIAUTOMATOR, f'new UiSelector().text("{day_name}")')
-    )
-
-
-def is_booking_screen_ready(driver, day_name):
-    ready_markers = driver.find_elements(
-        AppiumBy.ANDROID_UIAUTOMATOR,
-        f'new UiSelector().text("{day_name}")'
-    )
-    return bool(ready_markers)
 
 
 def select_court(driver, court_name):
@@ -720,39 +794,6 @@ def refresh_tomorrow_and_select_target_slot(
     ) from last_error
 
 
-def run_booking_flow_from_booking_screen(
-    driver,
-    day_name,
-    preferred_courts,
-    preferred_slots_by_window,
-    family_members,
-    min_capacity,
-    post_capacity_stabilize_sec,
-):
-    select_day(driver, day_name)
-    selected_slot, selected_court = select_preferred_slot_with_court_fallback(
-        driver,
-        preferred_slots_by_window,
-        preferred_courts,
-        min_capacity=min_capacity,
-        post_capacity_stabilize_sec=post_capacity_stabilize_sec,
-    )
-
-    select_family_members(driver, family_members)
-    # confirm_booking(driver, len(family_members))
-
-    if not detect_booking_success(driver, selected_slot=selected_slot):
-        raise Exception("Booking confirmation message not detected.")
-
-    write_log(
-        "run_booking_flow",
-        "success",
-        selected_slot=selected_slot,
-        details=f"Booked {selected_court}",
-    )
-    return selected_slot
-
-
 def run_race():
     driver = None
     selected_slot = "-"
@@ -817,11 +858,11 @@ def run_race():
             time.perf_counter() - family_selection_start,
         )
         booking_submission_start = time.perf_counter()
-        # confirm_booking(
-        #     driver,
-        #     len(config.FAMILY_MEMBERS),
-        #     timeout=config.RACE_CONFIRM_BUTTON_TIMEOUT_SEC,
-        # )
+        confirm_booking(
+            driver,
+            len(config.FAMILY_MEMBERS),
+            timeout=config.RACE_CONFIRM_BUTTON_TIMEOUT_SEC,
+        )
         print_timing(
             "Booking submission",
             time.perf_counter() - booking_submission_start,
