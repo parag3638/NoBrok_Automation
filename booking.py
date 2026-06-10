@@ -19,9 +19,30 @@ import config
 from logger import capture_screenshot, write_alert, write_log
 
 
-def safe_click(driver, locator, retries=config.CLICK_RETRIES, timeout=config.WAIT_SEC, retry_delay=config.RETRY_DELAY_SEC):
+def recover_from_blocking_overlay(driver):
+    if not is_home_overlay_visible(driver):
+        return False
+
+    dismissed = dismiss_home_overlay(driver)
+    if dismissed:
+        write_log("click_recovery", "success", details="Recovered from blocking home overlay")
+    return dismissed
+
+
+def safe_click(
+    driver,
+    locator,
+    retries=config.CLICK_RETRIES,
+    timeout=config.WAIT_SEC,
+    retry_delay=config.RETRY_DELAY_SEC,
+    allow_overlay_recovery=True,
+):
     last_error = None
-    for attempt in range(1, retries + 1):
+    recovery_attempt_consumed = False
+    max_attempts = retries + (1 if allow_overlay_recovery else 0)
+    attempt = 1
+
+    while attempt <= max_attempts:
         try:
             element = WebDriverWait(driver, timeout).until(
                 EC.element_to_be_clickable(locator)
@@ -34,8 +55,17 @@ def safe_click(driver, locator, retries=config.CLICK_RETRIES, timeout=config.WAI
             ElementClickInterceptedException,
         ) as exc:
             last_error = exc
-            if attempt < retries:
+            if allow_overlay_recovery and not recovery_attempt_consumed:
+                recovery_attempt_consumed = True
+                try:
+                    if recover_from_blocking_overlay(driver):
+                        continue
+                except Exception:
+                    pass
+
+            if attempt < max_attempts:
                 time.sleep(retry_delay)
+            attempt += 1
 
     raise Exception(
         f"Failed click after {retries} retries for locator: {locator}"
@@ -195,11 +225,70 @@ def is_home_overlay_visible(driver):
             'new UiSelector().text("List Now")',
         ),
     ]
-    return any(driver.find_elements(*locator) for locator in overlay_markers)
+    if any(driver.find_elements(*locator) for locator in overlay_markers):
+        return True
+
+    try:
+        page_source = driver.page_source.lower()
+    except Exception:
+        return False
+
+    return any(
+        keyword in page_source
+        for keyword in config.HOME_OVERLAY_PAGE_SOURCE_KEYWORDS
+    )
 
 
-def dismiss_home_overlay(driver):
-    if not is_home_overlay_visible(driver):
+def is_home_nav_available(driver):
+    home_nav_locators = [
+        (AppiumBy.ACCESSIBILITY_ID, "Society"),
+        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Society")'),
+    ]
+    return any(driver.find_elements(*locator) for locator in home_nav_locators)
+
+
+def tap_home_overlay_close_hotspot(driver, force=False):
+    window_size = driver.get_window_size()
+    width = window_size["width"]
+    height = window_size["height"]
+
+    for x_ratio, y_ratio in config.HOME_OVERLAY_CLOSE_HOTSPOTS:
+        driver.execute_script(
+            "mobile: clickGesture",
+            {
+                "x": int(width * x_ratio),
+                "y": int(height * y_ratio),
+            },
+        )
+        time.sleep(config.HOME_OVERLAY_DISMISS_WAIT_SEC)
+        if force and is_home_nav_available(driver):
+            write_log(
+                "home_overlay",
+                "success",
+                details=f"Forced hotspot recovered home nav x={x_ratio:.2f} y={y_ratio:.2f}",
+            )
+            return True
+        if not force and not is_home_overlay_visible(driver):
+            write_log(
+                "home_overlay",
+                "success",
+                details=f"Dismissed via hotspot x={x_ratio:.2f} y={y_ratio:.2f}",
+            )
+            return True
+
+    if force:
+        write_log(
+            "home_overlay",
+            "failure",
+            details="Forced hotspot dismissal attempted; home nav still unavailable",
+        )
+
+    return False
+
+
+def dismiss_home_overlay(driver, force=False):
+    overlay_detected = is_home_overlay_visible(driver)
+    if not overlay_detected and not force:
         return False
 
     dismiss_actions = [
@@ -218,6 +307,34 @@ def dismiss_home_overlay(driver):
             ),
         ),
         (
+            "close_text_lower",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().text("close")',
+            ),
+        ),
+        (
+            "close_desc_lower",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().descriptionContains("close")',
+            ),
+        ),
+        (
+            "close_desc_regex",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().descriptionMatches("(?i).*(close|dismiss|skip|cancel).*")',
+            ),
+        ),
+        (
+            "close_text_regex",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().textMatches("(?i)(close|dismiss|skip|cancel|not now)")',
+            ),
+        ),
+        (
             "maybe_x_text",
             (
                 AppiumBy.ANDROID_UIAUTOMATOR,
@@ -231,6 +348,27 @@ def dismiss_home_overlay(driver):
                 'new UiSelector().description("×")',
             ),
         ),
+        (
+            "maybe_x_text_regex",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().textMatches("[xX×✕✖]")',
+            ),
+        ),
+        (
+            "maybe_x_desc_regex",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().descriptionMatches("[xX×✕✖]")',
+            ),
+        ),
+        (
+            "close_id_regex",
+            (
+                AppiumBy.ANDROID_UIAUTOMATOR,
+                'new UiSelector().resourceIdMatches(".*(close|dismiss|cancel|cross|ivClose|imgClose|btnClose).*")',
+            ),
+        ),
     ]
 
     for action_name, locator in dismiss_actions:
@@ -241,24 +379,47 @@ def dismiss_home_overlay(driver):
                 retries=1,
                 timeout=1,
                 retry_delay=0,
+                allow_overlay_recovery=False,
             )
             time.sleep(config.HOME_OVERLAY_DISMISS_WAIT_SEC)
-            if not is_home_overlay_visible(driver):
-                write_log("home_overlay", "success", details=f"Dismissed via {action_name}")
+            if force or not is_home_overlay_visible(driver):
+                write_log(
+                    "home_overlay",
+                    "success",
+                    details=f"Dismissed via {action_name}" + (" | forced" if force else ""),
+                )
                 return True
         except Exception:
             pass
 
     try:
-        driver.back()
-        time.sleep(config.HOME_OVERLAY_DISMISS_WAIT_SEC)
-        if not is_home_overlay_visible(driver):
-            write_log("home_overlay", "success", details="Dismissed via Android back")
+        if tap_home_overlay_close_hotspot(driver, force=force):
             return True
     except Exception:
         pass
 
-    write_log("home_overlay", "failure", details="Overlay detected but not dismissed")
+    try:
+        driver.back()
+        time.sleep(config.HOME_OVERLAY_DISMISS_WAIT_SEC)
+        if force or not is_home_overlay_visible(driver):
+            write_log(
+                "home_overlay",
+                "success",
+                details="Dismissed via Android back" + (" | forced" if force else ""),
+            )
+            return True
+    except Exception:
+        pass
+
+    write_log(
+        "home_overlay",
+        "failure",
+        details=(
+            "Overlay detected but not dismissed"
+            if overlay_detected
+            else "Forced overlay dismissal attempted but no close target worked"
+        ),
+    )
     return False
 
 
@@ -281,7 +442,7 @@ def go_to_amenities(driver):
                 return
             except Exception as exc:
                 last_error = exc
-        dismiss_home_overlay(driver)
+        dismiss_home_overlay(driver, force=True)
 
     raise last_error or Exception("Could not navigate to Amenities from the home screen")
 
@@ -660,6 +821,216 @@ def detect_booking_success(
     return False
 
 
+def normalize_ui_text(value):
+    return re.sub(r"\s+", " ", value).strip().lower()
+
+
+def resolve_booking_date(day_name, base_dt=None):
+    base_dt = base_dt or datetime.now()
+    normalized_day = day_name.strip().lower()
+    if normalized_day == "today":
+        return base_dt.date()
+    if normalized_day == "tomorrow":
+        return (base_dt + timedelta(days=1)).date()
+    return None
+
+
+def format_booking_date_for_list(day_name, base_dt=None):
+    booking_date = resolve_booking_date(day_name, base_dt=base_dt)
+    if booking_date is None:
+        return None
+    return booking_date.strftime("%b %d, %Y")
+
+
+def format_booking_slot_for_list(slot_text, slot_window):
+    match = re.fullmatch(
+        r"\s*(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})\s*",
+        slot_text,
+    )
+    if not match:
+        return slot_text
+
+    window = slot_window.strip().lower()
+    prefer_pm = window in {"afternoon", "evening", "night"}
+
+    def format_time(hour_text, minute_text):
+        hour = int(hour_text)
+        minute = int(minute_text)
+        if prefer_pm and hour < 12:
+            hour += 12
+        suffix = "AM" if hour < 12 else "PM"
+        display_hour = hour % 12
+        if display_hour == 0:
+            display_hour = 12
+        return f"{display_hour:02d}:{minute:02d} {suffix}"
+
+    start = format_time(match.group(1), match.group(2))
+    end = format_time(match.group(3), match.group(4))
+    return f"{start} - {end}"
+
+
+def dismiss_exit_dialog_if_visible(driver):
+    try:
+        source = normalize_ui_text(driver.page_source)
+    except Exception:
+        return False
+
+    if "are you sure you want to exit" not in source:
+        return False
+
+    try:
+        safe_click(
+            driver,
+            (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("CANCEL")'),
+            retries=1,
+            timeout=1,
+            retry_delay=0,
+            allow_overlay_recovery=False,
+        )
+        time.sleep(0.5)
+        return True
+    except Exception:
+        return False
+
+
+def open_my_bookings(driver):
+    my_bookings_locator = (
+        AppiumBy.ANDROID_UIAUTOMATOR,
+        'new UiSelector().text("My Bookings")',
+    )
+
+    def is_my_bookings_open():
+        source = normalize_ui_text(driver.page_source)
+        return "my bookings" in source and (
+            "past bookings" in source or "upcoming bookings" in source
+        )
+
+    def click_my_bookings_if_visible(timeout=2):
+        try:
+            safe_click(
+                driver,
+                my_bookings_locator,
+                retries=1,
+                timeout=timeout,
+                retry_delay=0,
+                allow_overlay_recovery=False,
+            )
+            time.sleep(1)
+            return True
+        except Exception:
+            return False
+
+    for attempt in range(3):
+        dismiss_exit_dialog_if_visible(driver)
+        if is_my_bookings_open():
+            return
+
+        if click_my_bookings_if_visible():
+            if is_my_bookings_open():
+                return
+
+        if attempt < 2:
+            try:
+                driver.back()
+                time.sleep(1)
+            except Exception:
+                pass
+
+    dismiss_exit_dialog_if_visible(driver)
+    try:
+        go_to_amenities(driver)
+        if click_my_bookings_if_visible(timeout=3) and is_my_bookings_open():
+            return
+    except Exception:
+        pass
+
+    if click_my_bookings_if_visible(timeout=3) and is_my_bookings_open():
+        return
+
+    raise Exception("Could not open My Bookings for post-submit verification.")
+
+
+def booking_record_visible(
+    source,
+    sport_name,
+    selected_slot,
+    slot_window,
+    selected_court,
+    day_name,
+    members,
+):
+    normalized_source = normalize_ui_text(source)
+    expected_date = format_booking_date_for_list(day_name)
+    expected_slot = format_booking_slot_for_list(selected_slot, slot_window)
+
+    required_values = [
+        sport_name,
+        expected_slot,
+        selected_court,
+        "confirmed",
+    ]
+    if expected_date:
+        required_values.append(expected_date)
+    required_values.extend(members)
+
+    missing_values = [
+        value
+        for value in required_values
+        if value and normalize_ui_text(value) not in normalized_source
+    ]
+    return not missing_values, missing_values
+
+
+def verify_booking_in_my_bookings(
+    driver,
+    selected_slot,
+    slot_window,
+    selected_court,
+    timeout=None,
+    poll_interval=None,
+):
+    timeout = timeout or config.RACE_BOOKING_LIST_VERIFY_TIMEOUT_SEC
+    poll_interval = poll_interval or config.RACE_BOOKING_LIST_VERIFY_POLL_SEC
+    end_time = time.time() + timeout
+    last_missing_values = []
+
+    while time.time() < end_time:
+        open_my_bookings(driver)
+        found, missing_values = booking_record_visible(
+            driver.page_source,
+            sport_name=config.SPORT,
+            selected_slot=selected_slot,
+            slot_window=slot_window,
+            selected_court=selected_court,
+            day_name=config.DAY,
+            members=config.FAMILY_MEMBERS,
+        )
+        if found:
+            print("Booking verified in My Bookings")
+            capture_screenshot(driver, "success", "booking_verified")
+            write_log(
+                "booking_verification",
+                "success",
+                selected_slot=selected_slot,
+                details=(
+                    f"My Bookings contains {config.DAY} | {selected_slot} | "
+                    f"{selected_court}"
+                ),
+            )
+            return True
+
+        last_missing_values = missing_values
+        time.sleep(poll_interval)
+
+    write_log(
+        "booking_verification",
+        "failure",
+        selected_slot=selected_slot,
+        details=f"My Bookings missing expected values: {', '.join(last_missing_values)}",
+    )
+    return False
+
+
 def build_release_slot_preferences(release_profile):
     return {release_profile["window"]: [release_profile["slot"]]}
 
@@ -873,10 +1244,15 @@ def run_race():
 
         if config.RACE_REQUIRE_CONFIRMATION:
             booking_confirmation_start = time.perf_counter()
-            if not detect_booking_success(driver, selected_slot=selected_slot):
-                raise Exception("Booking confirmation message not detected.")
+            if not verify_booking_in_my_bookings(
+                driver,
+                selected_slot=selected_slot,
+                slot_window=release_profile["window"],
+                selected_court=selected_court,
+            ):
+                raise Exception("Booking was not found in My Bookings after submission.")
             print_timing(
-                "Booking confirmation detection",
+                "Booking list verification",
                 time.perf_counter() - booking_confirmation_start,
             )
 

@@ -7,11 +7,40 @@ AUTOMATION_NAME = "UiAutomator2"
 NO_RESET = True
 SESSION_NEW_COMMAND_TIMEOUT_SEC = 300
 
+
+EMULATOR_HEADLESS = True
+# EMULATOR_HEADLESS = False
+
+
+
 WAIT_SEC = 12
 CLICK_RETRIES = 2
 RETRY_DELAY_SEC = 1
 HOME_NAV_RETRIES = 3
 HOME_OVERLAY_DISMISS_WAIT_SEC = 0.5
+HOME_OVERLAY_PAGE_SOURCE_KEYWORDS = [
+    "looking to sell something",
+    "society marketplace",
+    "list now",
+    "lifetime free",
+    "zero forex",
+    "goldx",
+    "uni bobcard",
+    "shop now",
+    "sale",
+    "ajio",
+    "superdry",
+    "u.s. polo",
+    "instant discount",
+]
+HOME_OVERLAY_CLOSE_HOTSPOTS = [
+    (0.50, 0.42),
+    (0.50, 0.44),
+    (0.50, 0.49),
+    (0.50, 0.46),
+]
+
+
 PER_SLOT_TIMEOUT_SEC = 6
 EMPTY_STATE_RECHECK_ENABLED = True
 EMPTY_STATE_RECHECK_SEC = 0.25
@@ -36,23 +65,39 @@ SESSION_ALERT_FILE = "logs/ALERT_LOGIN_REQUIRED.txt"
 
 SPORT = "Lawn Tennis"
 DAY = "Tomorrow"
+# Set to `None` or `[]` to allow automation on every day.
+# Accepted values: "Mon", "Monday", "Tue", "Tuesday", etc.
+# RUN_ONLY_ON_WEEKDAYS = ["Monday"]
+RUN_ONLY_ON_WEEKDAYS = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+]
 PREFERRED_COURTS = [
     "Lawn Tennis Parcel 5",
     "Lawn Tennis Parcel 6",
 ]
+# PREFERRED_COURTS = [
+#     "Lawn Tennis Parcel 6",
+#     "Lawn Tennis Parcel 5",
+# ]
 
 # Release-specific slot target.
 # Keys are booking release times in 24h format.
 # Each release maps to the exact tomorrow slot to attempt first.
 RELEASE_SLOT_MAP = {
-    "12:00": {
-        "window": "Afternoon",
-        "slot": "01:00 - 02:00",
-    },
-    "19:00": {
-        "window": "Evening",
-        "slot": "08:00 - 09:00",
-    },
+    # "12:00": {
+    #     "window": "Afternoon",
+    #     "slot": "01:00 - 02:00",
+    # },
+    # "19:00": {
+    #     "window": "Evening",
+    #     "slot": "08:00 - 09:00",
+    # },
     "20:00": {
         "window": "Evening",
         "slot": "09:00 - 10:00",
@@ -89,12 +134,10 @@ RACE_SLOT_UNAVAILABLE_POPUP_WAIT_SEC = 0.45
 RACE_POST_CAPACITY_STABILIZE_SEC = 0
 RACE_FAMILY_ACTION_TIMEOUT_SEC = 1.5
 RACE_CONFIRM_BUTTON_TIMEOUT_SEC = 2
-RACE_REQUIRE_CONFIRMATION = False
+RACE_REQUIRE_CONFIRMATION = True
+RACE_BOOKING_LIST_VERIFY_TIMEOUT_SEC = 20
+RACE_BOOKING_LIST_VERIFY_POLL_SEC = 1
 
 
 FAMILY_MEMBERS = ["Parag", "Sayel Chakraborty", "Manav Grover"]
 MIN_CAPACITY = 3
-
-
-
-#Only Specific Days, Mobile in the background

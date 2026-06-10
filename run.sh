@@ -29,6 +29,7 @@ PYTHON_STAGE_START_EPOCH=""
 : "${ADB_CMD_TIMEOUT_SEC:=12}"
 : "${ADB_STABLE_TIMEOUT_SEC:=45}"
 : "${ADB_STABLE_SUCCESS_COUNT:=3}"
+: "${EMULATOR_HEADLESS:=}"
 : "${WRAPPER_PREP_CUTOFF_SEC:=}"
 
 mkdir -p \
@@ -142,6 +143,17 @@ format_elapsed() {
   printf '%02d:%02d:%02d' $((total_sec/3600)) $(((total_sec%3600)/60)) $((total_sec%60))
 }
 
+append_automation_log() {
+  local step="$1"
+  local status="$2"
+  local details="$3"
+  printf '%s | step=%s | status=%s | slot=- | details=%s\n' \
+    "$(date +"%F %T")" \
+    "$step" \
+    "$status" \
+    "$details" >> "$LOG_DIR/automation.log"
+}
+
 require_cmd python3
 require_cmd adb
 require_cmd emulator
@@ -165,8 +177,27 @@ else:
 PY
 }
 
+is_truthy() {
+  local value="${1:-}"
+
+  value="$(printf '%s' "$value" | tr '[:upper:]' '[:lower:]')"
+
+  case "$value" in
+    1|true|yes|on)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
 if [[ -z "${WRAPPER_PREP_CUTOFF_SEC:-}" ]]; then
   WRAPPER_PREP_CUTOFF_SEC="$(load_config_value "RACE_WRAPPER_PREP_CUTOFF_SEC")"
+fi
+
+if [[ -z "${EMULATOR_HEADLESS:-}" ]]; then
+  EMULATOR_HEADLESS="$(load_config_value "EMULATOR_HEADLESS")"
 fi
 
 PREP_DEADLINE_EPOCH=""
@@ -181,6 +212,84 @@ case "$MODE" in
   *)
     echo "[$(date +"%F %T")] Unsupported mode: $MODE"
     echo "[$(date +"%F %T")] Use: race"
+    exit 1
+    ;;
+esac
+
+RUN_DAY_EVAL="$(
+  python3 - <<'PY'
+from datetime import datetime
+import config
+
+weekday_aliases = {
+    "mon": "monday",
+    "monday": "monday",
+    "tue": "tuesday",
+    "tues": "tuesday",
+    "tuesday": "tuesday",
+    "wed": "wednesday",
+    "wednesday": "wednesday",
+    "thu": "thursday",
+    "thur": "thursday",
+    "thurs": "thursday",
+    "thursday": "thursday",
+    "fri": "friday",
+    "friday": "friday",
+    "sat": "saturday",
+    "saturday": "saturday",
+    "sun": "sunday",
+    "sunday": "sunday",
+}
+
+today_name = datetime.now().strftime("%A")
+allowed_weekdays = getattr(config, "RUN_ONLY_ON_WEEKDAYS", None)
+
+if not allowed_weekdays:
+    print(f"allow|No weekday restriction configured. Today={today_name}")
+    raise SystemExit
+if isinstance(allowed_weekdays, str):
+    allowed_weekdays = [allowed_weekdays]
+
+normalized_allowed = []
+invalid_entries = []
+for raw_value in allowed_weekdays:
+    normalized_value = weekday_aliases.get(str(raw_value).strip().lower())
+    if normalized_value:
+        normalized_allowed.append(normalized_value)
+    else:
+        invalid_entries.append(str(raw_value))
+
+if invalid_entries:
+    print(f"invalid|Invalid RUN_ONLY_ON_WEEKDAYS entries: {', '.join(invalid_entries)}")
+    raise SystemExit
+
+normalized_today = weekday_aliases[today_name.lower()]
+if normalized_today in normalized_allowed:
+    print(f"allow|Today={today_name} is allowed by RUN_ONLY_ON_WEEKDAYS")
+else:
+    print(f"skip|Today={today_name} is not in RUN_ONLY_ON_WEEKDAYS={', '.join(str(v) for v in allowed_weekdays)}")
+PY
+)"
+
+IFS='|' read -r RUN_DAY_STATUS RUN_DAY_MESSAGE <<< "$RUN_DAY_EVAL"
+
+case "$RUN_DAY_STATUS" in
+  allow)
+    echo "[$(date +"%F %T")] $RUN_DAY_MESSAGE"
+    ;;
+  skip)
+    echo "[$(date +"%F %T")] $RUN_DAY_MESSAGE"
+    append_automation_log "run_day_guard" "skipped" "$RUN_DAY_MESSAGE"
+    exit 0
+    ;;
+  invalid)
+    echo "[$(date +"%F %T")] $RUN_DAY_MESSAGE"
+    append_automation_log "run_day_guard" "failure" "$RUN_DAY_MESSAGE"
+    exit 1
+    ;;
+  *)
+    echo "[$(date +"%F %T")] Unexpected run-day evaluation output: ${RUN_DAY_EVAL:-empty}"
+    append_automation_log "run_day_guard" "failure" "Unexpected run-day evaluation output"
     exit 1
     ;;
 esac
@@ -267,8 +376,19 @@ EMULATOR_STARTED=0
 
 if [[ -z "$EMULATOR_SERIAL" ]]; then
   EMULATOR_STARTED=1
+  EMULATOR_ARGS=(
+    -avd "$AVD_NAME"
+    -no-snapshot-load
+    -no-boot-anim
+  )
+
+  if is_truthy "${EMULATOR_HEADLESS:-}"; then
+    EMULATOR_ARGS+=(-no-window)
+  fi
+
   echo "[$(date +"%F %T")] No running emulator detected. Starting AVD: $AVD_NAME"
-  nohup emulator -avd "$AVD_NAME" -no-snapshot-load -no-boot-anim > "$EMULATOR_LOG_DIR/emulator_$RUN_TS.log" 2>&1 &
+  echo "[$(date +"%F %T")] Emulator headless mode: ${EMULATOR_HEADLESS:-disabled}"
+  nohup emulator "${EMULATOR_ARGS[@]}" > "$EMULATOR_LOG_DIR/emulator_$RUN_TS.log" 2>&1 &
 
   deadline=$((SECONDS + EMULATOR_BOOT_TIMEOUT_SEC))
   while [[ $SECONDS -lt $deadline ]]; do
