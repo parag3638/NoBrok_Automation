@@ -6,11 +6,15 @@ DEVICE_NAME = "Android Emulator"
 AUTOMATION_NAME = "UiAutomator2"
 NO_RESET = True
 SESSION_NEW_COMMAND_TIMEOUT_SEC = 300
+UIAUTOMATOR2_SERVER_LAUNCH_TIMEOUT_MS = 90000
+UIAUTOMATOR2_SERVER_INSTALL_TIMEOUT_MS = 90000
+ADB_EXEC_TIMEOUT_MS = 90000
+APPIUM_SESSION_CREATE_RETRIES = 2
+APPIUM_SESSION_RETRY_DELAY_SEC = 5
 
 
 EMULATOR_HEADLESS = True
 # EMULATOR_HEADLESS = False
-
 
 
 WAIT_SEC = 12
@@ -33,6 +37,8 @@ HOME_OVERLAY_PAGE_SOURCE_KEYWORDS = [
     "u.s. polo",
     "instant discount",
 ]
+
+
 HOME_OVERLAY_CLOSE_HOTSPOTS = [
     (0.50, 0.42),
     (0.50, 0.44),
@@ -65,9 +71,13 @@ SESSION_ALERT_FILE = "logs/ALERT_LOGIN_REQUIRED.txt"
 
 SPORT = "Lawn Tennis"
 DAY = "Tomorrow"
+
+
 # Set to `None` or `[]` to allow automation on every day.
 # Accepted values: "Mon", "Monday", "Tue", "Tuesday", etc.
 # RUN_ONLY_ON_WEEKDAYS = ["Monday"]
+
+
 RUN_ONLY_ON_WEEKDAYS = [
     "Monday",
     "Tuesday",
@@ -77,18 +87,17 @@ RUN_ONLY_ON_WEEKDAYS = [
     "Saturday",
     "Sunday",
 ]
+
+
 PREFERRED_COURTS = [
     "Lawn Tennis Parcel 5",
     "Lawn Tennis Parcel 6",
 ]
-# PREFERRED_COURTS = [
-#     "Lawn Tennis Parcel 6",
-#     "Lawn Tennis Parcel 5",
-# ]
 
 # Release-specific slot target.
 # Keys are booking release times in 24h format.
 # Each release maps to the exact tomorrow slot to attempt first.
+
 RELEASE_SLOT_MAP = {
     # "12:00": {
     #     "window": "Afternoon",
@@ -110,11 +119,11 @@ RELEASE_SLOT_MAP = {
 # Set it back to None for scheduled production runs.
 # RACE_TEST_TRIGGER_AFTER_SEC = 20
 
-RACE_TEST_TRIGGER_AFTER_SEC = None
 # RACE_TEST_TRIGGER_AFTER_SEC = 20
+RACE_TEST_TRIGGER_AFTER_SEC = None
 RACE_TEST_PROFILE = {
-    "window": "Morning",
-    "slot": "09:00 - 10:00",
+    "window": "Afternoon",
+    "slot": "03:00 - 04:00",
 }
 
 RACE_DAY_HOLD = "Today"
@@ -124,6 +133,7 @@ RACE_FINAL_WINDOW_SEC = 10
 RACE_LAST_MILE_WINDOW_SEC = 3
 RACE_LAST_MILE_POLL_INTERVAL_SEC = 0.25
 RACE_REFRESH_RETRY_TIMEOUT_SEC = 8
+RACE_MAX_PRE_RELEASE_WAIT_SEC = 600
 # Abort the shell wrapper if emulator/Appium prep takes too long before Python starts.
 # Set to None to disable this cutoff.
 RACE_WRAPPER_PREP_CUTOFF_SEC = 90
@@ -137,6 +147,9 @@ RACE_CONFIRM_BUTTON_TIMEOUT_SEC = 2
 RACE_REQUIRE_CONFIRMATION = True
 RACE_BOOKING_LIST_VERIFY_TIMEOUT_SEC = 20
 RACE_BOOKING_LIST_VERIFY_POLL_SEC = 1
+EXIT_AFTER_BOOK_CLICK = False
+POST_BOOK_CLICK_EXIT_DELAY_SEC = 3
+DRY_RUN_SKIP_BOOKING = False
 
 
 FAMILY_MEMBERS = ["Parag", "Sayel Chakraborty", "Manav Grover"]
