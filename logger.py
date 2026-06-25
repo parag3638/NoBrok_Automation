@@ -4,6 +4,7 @@ import re
 
 LOG_DIR = Path("logs")
 AUTOMATION_LOG = LOG_DIR / "automation.log"
+PAGE_SOURCE_DIR = LOG_DIR / "page_sources"
 SCREENSHOT_ROOT = Path("screenshots")
 SUCCESS_DIR = SCREENSHOT_ROOT / "success"
 FAILURE_DIR = SCREENSHOT_ROOT / "failure"
@@ -38,6 +39,29 @@ def capture_screenshot(driver, status, label):
         return path
     except Exception as exc:
         print(f"Screenshot skipped for {safe_label}: {type(exc).__name__}: {exc}")
+        return None
+
+
+def dump_page_source(driver, label):
+    """Save the current Appium page source XML for after-the-fact debugging.
+
+    Best-effort: never raises, so it is safe to call from failure paths.
+    """
+    PAGE_SOURCE_DIR.mkdir(parents=True, exist_ok=True)
+    safe_label = re.sub(r"[^a-zA-Z0-9_-]+", "_", label).strip("_") or "snapshot"
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = PAGE_SOURCE_DIR / f"{safe_label}_{timestamp}.xml"
+    try:
+        source = driver.page_source
+    except Exception as exc:
+        print(f"Page source dump skipped for {safe_label}: {type(exc).__name__}: {exc}")
+        return None
+    try:
+        path.write_text(source, encoding="utf-8")
+        print(f"Page source saved: {path}")
+        return path
+    except Exception as exc:
+        print(f"Page source write failed for {safe_label}: {type(exc).__name__}: {exc}")
         return None
 
 

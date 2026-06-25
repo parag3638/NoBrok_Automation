@@ -16,7 +16,25 @@ import subprocess
 from datetime import datetime, timedelta
 
 import config
-from logger import capture_screenshot, write_alert, write_log
+from logger import capture_screenshot, dump_page_source, write_alert, write_log
+
+
+def save_failure_evidence(driver, label):
+    """Capture a screenshot and (optionally) a page-source dump for a failure.
+
+    Best-effort: safe to call from any failure or rejected-grab path.
+    """
+    if driver is None:
+        return
+    try:
+        capture_screenshot(driver, "failure", label)
+    except Exception:
+        pass
+    if getattr(config, "SAVE_PAGE_SOURCE_ON_FAILURE", False):
+        try:
+            dump_page_source(driver, label)
+        except Exception:
+            pass
 
 
 def recover_from_blocking_overlay(driver):
@@ -82,7 +100,7 @@ def wait_present(driver, locator, timeout=config.WAIT_SEC):
     )
 
 
-def open_app():
+def build_appium_options():
     options = UiAutomator2Options()
     options.platform_name = config.PLATFORM_NAME
     options.device_name = config.DEVICE_NAME
@@ -91,10 +109,83 @@ def open_app():
     options.app_activity = config.ACTIVITY
     options.no_reset = config.NO_RESET
     options.set_capability("newCommandTimeout", config.SESSION_NEW_COMMAND_TIMEOUT_SEC)
+    options.set_capability(
+        "uiautomator2ServerLaunchTimeout",
+        config.UIAUTOMATOR2_SERVER_LAUNCH_TIMEOUT_MS,
+    )
+    options.set_capability(
+        "uiautomator2ServerInstallTimeout",
+        config.UIAUTOMATOR2_SERVER_INSTALL_TIMEOUT_MS,
+    )
+    options.set_capability("adbExecTimeout", config.ADB_EXEC_TIMEOUT_MS)
+    if getattr(config, "DISABLE_WINDOW_ANIMATION", False):
+        options.set_capability("disableWindowAnimation", True)
     device_udid = os.getenv("ANDROID_SERIAL")
     if device_udid:
         options.udid = device_udid
-    return webdriver.Remote(config.APPIUM_URL, options=options)
+    return options
+
+
+def apply_uia2_settings(driver):
+    """Tune UiAutomator2 driver settings to cut per-interaction latency.
+
+    By default UiAutomator2 blocks until the app is "idle" before every action;
+    an animated/networked app rarely settles, taxing each click/find by ~750ms.
+    Lowering waitForIdleTimeout removes that tax. Best-effort: never raises.
+    """
+    settings = {
+        "waitForIdleTimeout": getattr(config, "UIA2_WAIT_FOR_IDLE_TIMEOUT_MS", 0),
+        "actionAcknowledgmentTimeout": getattr(config, "UIA2_ACTION_ACK_TIMEOUT_MS", 50),
+        "ignoreUnimportantViews": getattr(config, "UIA2_IGNORE_UNIMPORTANT_VIEWS", True),
+    }
+    try:
+        driver.update_settings(settings)
+        write_log("uia2_settings", "success", selected_slot="-", details=str(settings))
+    except Exception as exc:
+        # Non-fatal: the session still works, just without the speedup.
+        write_log(
+            "uia2_settings",
+            "failure",
+            selected_slot="-",
+            details=f"{type(exc).__name__}: {exc}",
+        )
+
+
+def reconnect_adb_device():
+    device_udid = os.getenv("ANDROID_SERIAL")
+    if not device_udid:
+        return
+
+    subprocess.run(["adb", "reconnect", "offline"], check=False, timeout=15)
+    subprocess.run(["adb", "-s", device_udid, "wait-for-device"], check=False, timeout=30)
+
+
+def open_app():
+    retries = getattr(config, "APPIUM_SESSION_CREATE_RETRIES", 0)
+    retry_delay_sec = getattr(config, "APPIUM_SESSION_RETRY_DELAY_SEC", 5)
+    last_error = None
+
+    for attempt in range(1, retries + 2):
+        try:
+            driver = webdriver.Remote(config.APPIUM_URL, options=build_appium_options())
+            apply_uia2_settings(driver)
+            return driver
+        except Exception as exc:
+            last_error = exc
+            if attempt > retries:
+                break
+
+            print(f"Appium session create failed on attempt {attempt}: {exc}")
+            write_log(
+                "appium_session",
+                "retry",
+                selected_slot="-",
+                details=f"attempt={attempt} | {type(exc).__name__}: {exc}",
+            )
+            reconnect_adb_device()
+            time.sleep(retry_delay_sec)
+
+    raise last_error
 
 
 def ensure_app_in_foreground(driver):
@@ -201,6 +292,39 @@ def format_elapsed_sec(elapsed_sec):
 
 def print_timing(label, elapsed_sec):
     print(f"{label}: {elapsed_sec:.2f}s [{format_elapsed_sec(elapsed_sec)}]")
+
+
+def format_phase_timings(phase_timings):
+    """Render a one-line phase-by-phase timing breakdown for the daily log.
+
+    Device-start and Appium-start come from env vars exported by run.sh (the
+    wrapper measures those before Python launches); the rest are this run's
+    in-process phase timers. Phases that did not run show as "-".
+    """
+
+    def fmt(value):
+        return f"{value:.2f}s" if isinstance(value, (int, float)) else "-"
+
+    parts = []
+    device_start = os.getenv("DEVICE_STAGE_ELAPSED_SEC")
+    appium_start = os.getenv("APPIUM_STAGE_ELAPSED_SEC")
+    if device_start:
+        parts.append(f"device_start={device_start}s")
+    if appium_start:
+        parts.append(f"appium_start={appium_start}s")
+    parts.extend(
+        [
+            f"driver_session={fmt(phase_timings.get('driver_session'))}",
+            f"app_foreground={fmt(phase_timings.get('app_foreground'))}",
+            f"navigate={fmt(phase_timings.get('navigate'))}",
+            f"prep_total={fmt(phase_timings.get('prep_total'))}",
+            f"wait_trigger={fmt(phase_timings.get('wait_trigger'))}",
+            f"slot_select={fmt(phase_timings.get('slot_select'))}",
+            f"family={fmt(phase_timings.get('family'))}",
+            f"submit={fmt(phase_timings.get('submit'))}",
+        ]
+    )
+    return " | ".join(parts)
 
 
 def click_element_with_fallback(driver, element):
@@ -546,7 +670,12 @@ def select_slot_with_timeout(driver, slot_text, timeout, popup_wait_sec=1.2):
 
     click_element_with_fallback(driver, slot_element)
 
-    if wait_for_slot_unavailable_popup(driver, max_wait_sec=popup_wait_sec):
+    # Race the two mutually-exclusive outcomes instead of always waiting the full
+    # popup window: success surfaces the capacity label, failure surfaces the
+    # "slot is not available" popup. Return the instant either appears so a
+    # successful grab does not pay the full popup_wait_sec.
+    result = wait_for_slot_result(driver, max_wait_sec=popup_wait_sec)
+    if result == "unavailable":
         dismiss_slot_unavailable_popup(driver)
         raise Exception(f"Slot {slot_text} is unavailable")
 
@@ -570,6 +699,37 @@ def wait_for_slot_unavailable_popup(driver, max_wait_sec=1.2, poll_sec=0.2):
             return True
         time.sleep(poll_sec)
     return False
+
+
+def is_capacity_label_visible(driver):
+    return bool(
+        driver.find_elements(
+            AppiumBy.ANDROID_UIAUTOMATOR,
+            'new UiSelector().resourceId("com.app.nobrokerhood:id/labelAvailableSlot")',
+        )
+    )
+
+
+def wait_for_slot_result(driver, max_wait_sec, poll_sec=0.05):
+    """Poll for the outcome of a slot tap and return as soon as it is known.
+
+    Returns:
+      "unavailable" - the "slot is not available" popup appeared (failure),
+      "available"   - the capacity label appeared (success),
+      "unknown"     - neither resolved within max_wait_sec (caller falls back to
+                      reading the capacity label with its own timeout).
+    """
+    deadline = time.time() + max_wait_sec
+    while True:
+        # Check failure first: the two states are mutually exclusive, but the
+        # popup is the one we must not miss before reporting success.
+        if is_slot_unavailable_popup_visible(driver):
+            return "unavailable"
+        if is_capacity_label_visible(driver):
+            return "available"
+        if time.time() >= deadline:
+            return "unknown"
+        time.sleep(poll_sec)
 
 
 def dismiss_slot_unavailable_popup(driver):
@@ -1168,19 +1328,58 @@ def refresh_tomorrow_and_select_target_slot(
 def run_race():
     driver = None
     selected_slot = "-"
+    release_key = "-"
     start_time = time.perf_counter()
     booking_page_ready_time = None
+    # Per-phase timings (seconds). Populated as the flow progresses; any that are
+    # still None at log time simply did not complete this run.
+    phase_timings = {
+        "driver_session": None,
+        "app_foreground": None,
+        "navigate": None,
+        "prep_total": None,
+        "wait_trigger": None,
+        "slot_select": None,
+        "family": None,
+        "submit": None,
+    }
     try:
         target_dt, release_key, release_profile = resolve_race_target()
+        max_pre_release_wait_sec = getattr(config, "RACE_MAX_PRE_RELEASE_WAIT_SEC", None)
+        if config.RACE_TEST_TRIGGER_AFTER_SEC is None and max_pre_release_wait_sec is not None:
+            wait_sec = max(0, (target_dt - datetime.now()).total_seconds())
+            if wait_sec > max_pre_release_wait_sec:
+                message = (
+                    f"Skipped release={release_key}; wait {wait_sec:.1f}s exceeds "
+                    f"RACE_MAX_PRE_RELEASE_WAIT_SEC={max_pre_release_wait_sec}"
+                )
+                print(message)
+                write_log("race", "skipped", selected_slot="-", details=message)
+                return True, message
+
         release_slot_preferences = build_release_slot_preferences(release_profile)
 
         driver = open_app()
+        driver_ready_time = time.perf_counter()
+        driver_session_sec = driver_ready_time - start_time
+        phase_timings["driver_session"] = driver_session_sec
+        print_timing("Appium session create", driver_session_sec)
+
         ensure_app_in_foreground(driver)
         enforce_session_guard(driver)
+        app_ready_time = time.perf_counter()
+        app_foreground_sec = app_ready_time - driver_ready_time
+        phase_timings["app_foreground"] = app_foreground_sec
+        print_timing("App foreground + session guard", app_foreground_sec)
+
         open_booking_screen(driver, config.SPORT)
         select_day_if_needed(driver, config.RACE_DAY_HOLD)
         booking_page_ready_time = time.perf_counter()
+        navigate_sec = booking_page_ready_time - app_ready_time
+        phase_timings["navigate"] = navigate_sec
+        print_timing("Navigate to booking page", navigate_sec)
         booking_page_ready_elapsed_sec = booking_page_ready_time - start_time
+        phase_timings["prep_total"] = booking_page_ready_elapsed_sec
         print(
             "Booking page ready in "
             f"{booking_page_ready_elapsed_sec:.2f}s "
@@ -1199,9 +1398,11 @@ def run_race():
 
         wait_for_release_boundary(target_dt, release_key, driver=driver)
         trigger_reached_time = time.perf_counter()
+        wait_for_trigger_sec = trigger_reached_time - booking_page_ready_time
+        phase_timings["wait_trigger"] = wait_for_trigger_sec
         print_timing(
             "Time from booking page ready to trigger",
-            trigger_reached_time - booking_page_ready_time,
+            wait_for_trigger_sec,
         )
 
         slot_selection_start = time.perf_counter()
@@ -1218,47 +1419,82 @@ def run_race():
             time.perf_counter() - slot_selection_start,
         )
 
+        slot_selection_sec = time.perf_counter() - slot_selection_start
+        phase_timings["slot_select"] = slot_selection_sec
+
         family_selection_start = time.perf_counter()
         select_family_members(
             driver,
             config.FAMILY_MEMBERS,
             action_timeout=config.RACE_FAMILY_ACTION_TIMEOUT_SEC,
         )
-        print_timing(
-            "Family selection",
-            time.perf_counter() - family_selection_start,
-        )
-        booking_submission_start = time.perf_counter()
-        confirm_booking(
-            driver,
-            len(config.FAMILY_MEMBERS),
-            timeout=config.RACE_CONFIRM_BUTTON_TIMEOUT_SEC,
-        )
-        print_timing(
-            "Booking submission",
-            time.perf_counter() - booking_submission_start,
-        )
+        family_selection_sec = time.perf_counter() - family_selection_start
+        phase_timings["family"] = family_selection_sec
+        print_timing("Family selection", family_selection_sec)
+        booking_submission_sec = 0.0
+        dry_run_skip_booking = getattr(config, "DRY_RUN_SKIP_BOOKING", False)
+        if dry_run_skip_booking:
+            print("Dry run enabled: skipped final booking click")
+            write_log(
+                "booking_submission",
+                "skipped",
+                selected_slot=selected_slot,
+                details="DRY_RUN_SKIP_BOOKING=True",
+            )
+        else:
+            booking_submission_start = time.perf_counter()
+            confirm_booking(
+                driver,
+                len(config.FAMILY_MEMBERS),
+                timeout=config.RACE_CONFIRM_BUTTON_TIMEOUT_SEC,
+            )
+            # Always grab proof of the screen the instant Book is pressed — timing
+            # no longer matters past this point, evidence does.
+            capture_screenshot(driver, "success", "post_book_click")
+            write_log(
+                "booking_submission",
+                "success",
+                selected_slot=selected_slot,
+                details=f"Clicked Book for {len(config.FAMILY_MEMBERS)}",
+            )
+            if getattr(config, "EXIT_AFTER_BOOK_CLICK", False):
+                exit_delay_sec = getattr(config, "POST_BOOK_CLICK_EXIT_DELAY_SEC", 3)
+                print(f"Book clicked: waiting {exit_delay_sec}s before exit")
+                time.sleep(exit_delay_sec)
+            booking_submission_sec = time.perf_counter() - booking_submission_start
+            print_timing("Booking submission", booking_submission_sec)
+        phase_timings["submit"] = booking_submission_sec
 
         booking_after_page_sec = time.perf_counter() - booking_page_ready_time
         print_timing("Time from booking page ready to booking submission", booking_after_page_sec)
 
-        if config.RACE_REQUIRE_CONFIRMATION:
+        exit_after_book_click = getattr(config, "EXIT_AFTER_BOOK_CLICK", False)
+        if config.RACE_REQUIRE_CONFIRMATION and not dry_run_skip_booking and not exit_after_book_click:
             booking_confirmation_start = time.perf_counter()
-            if not verify_booking_in_my_bookings(
+            # Thorough verification (time no longer matters here): first look for the
+            # in-place confirmation screen, then confirm the record really landed in
+            # My Bookings. Either one succeeding is acceptable proof.
+            confirmed_screen = detect_booking_success(driver, selected_slot)
+            verified_in_list = verify_booking_in_my_bookings(
                 driver,
                 selected_slot=selected_slot,
                 slot_window=release_profile["window"],
                 selected_court=selected_court,
-            ):
-                raise Exception("Booking was not found in My Bookings after submission.")
+            )
             print_timing(
                 "Booking list verification",
                 time.perf_counter() - booking_confirmation_start,
             )
+            if not (confirmed_screen or verified_in_list):
+                save_failure_evidence(driver, "booking_not_verified")
+                raise Exception(
+                    "Booking not verified after submission "
+                    f"(confirmed_screen={confirmed_screen}, my_bookings={verified_in_list})."
+                )
 
         elapsed_sec = time.perf_counter() - start_time
         booking_after_page_sec = elapsed_sec - booking_page_ready_elapsed_sec
-        if config.RACE_REQUIRE_CONFIRMATION:
+        if config.RACE_REQUIRE_CONFIRMATION and not dry_run_skip_booking and not exit_after_book_click:
             print_timing("Time from booking page ready to booking outcome", booking_after_page_sec)
         write_log(
             "timing",
@@ -1273,11 +1509,42 @@ def run_race():
             details=(
                 f"Race flow completed in {elapsed_sec:.2f}s | "
                 f"release={release_key} | court={selected_court} | "
-                f"confirmation_required={config.RACE_REQUIRE_CONFIRMATION}"
+                f"confirmation_required={config.RACE_REQUIRE_CONFIRMATION} | "
+                f"exit_after_book_click={exit_after_book_click} | "
+                f"dry_run_skip_booking={dry_run_skip_booking}"
             ),
         )
+        # Single consolidated outcome line: everything about this booking in one place.
+        write_log(
+            "booking_outcome",
+            "success",
+            selected_slot=selected_slot,
+            details=(
+                f"release={release_key} | slot={selected_slot} | "
+                f"window={release_profile['window']} | court={selected_court} | "
+                f"members={'+'.join(config.FAMILY_MEMBERS)} ({len(config.FAMILY_MEMBERS)}) | "
+                f"timings[s]: prep={booking_page_ready_elapsed_sec:.2f} "
+                f"slot_select={slot_selection_sec:.2f} family={family_selection_sec:.2f} "
+                f"submit={booking_submission_sec:.2f} total={elapsed_sec:.2f} | "
+                f"dry_run={dry_run_skip_booking}"
+            ),
+        )
+        # Full per-phase breakdown (device + appium from the wrapper, plus every
+        # in-app phase) — one greppable line per day for trend tracking.
+        write_log(
+            "phase_timing",
+            "success",
+            selected_slot=selected_slot,
+            details=f"{format_phase_timings(phase_timings)} | total={elapsed_sec:.2f}s",
+        )
+        if dry_run_skip_booking:
+            action_label = "Dry run completed"
+        elif exit_after_book_click:
+            action_label = "Book clicked; exited after delay"
+        else:
+            action_label = "Booked successfully"
         return True, (
-            f"Booked successfully. Release: {release_key}. "
+            f"{action_label}. Release: {release_key}. "
             f"Slot: {selected_slot}. Time: {elapsed_sec:.2f}s"
         )
     except Exception as exc:
@@ -1285,8 +1552,7 @@ def run_race():
         if booking_page_ready_time is not None:
             booking_after_page_sec = elapsed_sec - (booking_page_ready_time - start_time)
             print_timing("Time from booking page ready to booking outcome", booking_after_page_sec)
-        if driver is not None:
-            capture_screenshot(driver, "failure", "race_flow_exception")
+        save_failure_evidence(driver, "race_flow_exception")
         write_log(
             "timing",
             "failure",
@@ -1298,6 +1564,23 @@ def run_race():
             "failure",
             selected_slot=selected_slot,
             details=f"{type(exc).__name__}: {exc} | after {elapsed_sec:.2f}s",
+        )
+        write_log(
+            "booking_outcome",
+            "failure",
+            selected_slot=selected_slot,
+            details=(
+                f"{type(exc).__name__}: {exc} | release={release_key} | "
+                f"slot={selected_slot} | after {elapsed_sec:.2f}s"
+            ),
+        )
+        # Phase breakdown for the failed run too — shows how far it got and where
+        # the time went before the failure.
+        write_log(
+            "phase_timing",
+            "failure",
+            selected_slot=selected_slot,
+            details=f"{format_phase_timings(phase_timings)} | total={elapsed_sec:.2f}s",
         )
         return False, f"{exc} (after {elapsed_sec:.2f}s)"
     finally:

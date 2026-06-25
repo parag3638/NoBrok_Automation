@@ -12,6 +12,25 @@ ADB_EXEC_TIMEOUT_MS = 90000
 APPIUM_SESSION_CREATE_RETRIES = 2
 APPIUM_SESSION_RETRY_DELAY_SEC = 5
 
+# UiAutomator2 driver settings applied right after the session is created.
+#
+# MEASURED FINDING (dry-run A/B, 2026-06-25): lowering waitForIdleTimeout does NOT
+# speed up this app. The ~750ms/interaction is the app's own network+render
+# latency, not the UiAutomator2 idle wait — stock (10000) and tuned (100) gave the
+# same post-trigger timings, and idle=0 actively broke navigation (taps fired on a
+# still-scrolling list). So this is treated as a SAFETY CAP, not a speedup: 1500ms
+# is comfortably above the observed ~750ms settle time (so it never truncates a
+# real transition or misfires) while capping pathological "never idle" screens
+# well below the 10s stock default. Set to 10000 to fully restore stock behaviour.
+UIA2_WAIT_FOR_IDLE_TIMEOUT_MS = 1500
+UIA2_ACTION_ACK_TIMEOUT_MS = 3000
+# ignoreUnimportantViews can hide elements from the finder; keep it off (Appium
+# default) unless a measured need arises.
+UIA2_IGNORE_UNIMPORTANT_VIEWS = False
+DISABLE_WINDOW_ANIMATION = True
+# Read by run.sh (via load_config_value) to zero out emulator animator scales.
+DISABLE_EMULATOR_ANIMATIONS = True
+
 
 EMULATOR_HEADLESS = True
 # EMULATOR_HEADLESS = False
@@ -150,6 +169,11 @@ RACE_BOOKING_LIST_VERIFY_POLL_SEC = 1
 EXIT_AFTER_BOOK_CLICK = False
 POST_BOOK_CLICK_EXIT_DELAY_SEC = 3
 DRY_RUN_SKIP_BOOKING = False
+
+# When True, failure paths (and rejected-grab decision points) dump the current
+# Appium page source XML into logs/page_sources/ alongside a screenshot, so an
+# after-the-fact run can be debugged from what the app actually showed.
+SAVE_PAGE_SOURCE_ON_FAILURE = True
 
 
 FAMILY_MEMBERS = ["Parag", "Sayel Chakraborty", "Manav Grover"]

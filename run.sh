@@ -80,6 +80,10 @@ cleanup() {
 
   rm -f "$LOCK_FILE"
   echo "[$(date +"%F %T")] Total run time: ${SCRIPT_ELAPSED_SEC}s (${SCRIPT_ELAPSED_FMT})"
+  # Guarded: cleanup may fire before append_automation_log is defined on an early error.
+  if declare -F append_automation_log >/dev/null 2>&1; then
+    append_automation_log "run_total" "success" "elapsed_sec=${SCRIPT_ELAPSED_SEC} fmt=${SCRIPT_ELAPSED_FMT} exit_code=${exit_code}"
+  fi
   echo "[$(date +"%F %T")] Lock removed"
 
   exec 1>&3 2>&4
@@ -445,11 +449,24 @@ run_with_timeout "$ADB_CMD_TIMEOUT_SEC" adb -s "$EMULATOR_SERIAL" shell input ke
 run_with_timeout "$ADB_CMD_TIMEOUT_SEC" adb -s "$EMULATOR_SERIAL" shell input keyevent 3 || true
 sleep 2
 echo "[$(date +"%F %T")] Emulator unlock sequence done"
+
+# Disable system animations so screen transitions are instant and the UI reaches
+# an idle state sooner — this complements the UiAutomator2 waitForIdle tuning and
+# shaves latency off every interaction during the booking race.
+if is_truthy "$(load_config_value "DISABLE_EMULATOR_ANIMATIONS")"; then
+  echo "[$(date +"%F %T")] Disabling emulator animations"
+  run_with_timeout "$ADB_CMD_TIMEOUT_SEC" adb -s "$EMULATOR_SERIAL" shell settings put global window_animation_scale 0 || true
+  run_with_timeout "$ADB_CMD_TIMEOUT_SEC" adb -s "$EMULATOR_SERIAL" shell settings put global transition_animation_scale 0 || true
+  run_with_timeout "$ADB_CMD_TIMEOUT_SEC" adb -s "$EMULATOR_SERIAL" shell settings put global animator_duration_scale 0 || true
+fi
+
 DEVICE_STAGE_END_EPOCH="$(date +%s)"
 DEVICE_STAGE_ELAPSED_SEC=$((DEVICE_STAGE_END_EPOCH - DEVICE_STAGE_START_EPOCH))
 echo "[$(date +"%F %T")] Device ready after ${DEVICE_STAGE_ELAPSED_SEC}s ($(format_elapsed "$DEVICE_STAGE_ELAPSED_SEC"))"
+append_automation_log "device_start" "success" "elapsed_sec=${DEVICE_STAGE_ELAPSED_SEC} fmt=$(format_elapsed "$DEVICE_STAGE_ELAPSED_SEC")"
 
 # 3) Ensure Appium running.
+APPIUM_STAGE_START_EPOCH="$(date +%s)"
 appium_up() {
   curl --connect-timeout 2 --max-time 5 -fsS "http://$APPIUM_HOST:$APPIUM_PORT/status" >/dev/null 2>&1
 }
@@ -528,6 +545,10 @@ else
 fi
 
 echo "[$(date +"%F %T")] Appium ready"
+APPIUM_STAGE_END_EPOCH="$(date +%s)"
+APPIUM_STAGE_ELAPSED_SEC=$((APPIUM_STAGE_END_EPOCH - APPIUM_STAGE_START_EPOCH))
+echo "[$(date +"%F %T")] Appium ready after ${APPIUM_STAGE_ELAPSED_SEC}s ($(format_elapsed "$APPIUM_STAGE_ELAPSED_SEC"))"
+append_automation_log "appium_start" "success" "elapsed_sec=${APPIUM_STAGE_ELAPSED_SEC} fmt=$(format_elapsed "$APPIUM_STAGE_ELAPSED_SEC")"
 
 # Final adb readiness gate to reduce "device offline" session failures.
 echo "[$(date +"%F %T")] Verifying emulator adb stability before Python launch"
@@ -541,10 +562,15 @@ fi
 abort_if_wrapper_prep_too_slow "preparing to launch Python automation"
 echo "[$(date +"%F %T")] Launching python automation"
 cd "$PROJECT_DIR"
+# Hand the wrapper-stage timings to Python so its consolidated phase_timing log
+# line can include device_start and appium_start alongside the in-app phases.
+export DEVICE_STAGE_ELAPSED_SEC
+export APPIUM_STAGE_ELAPSED_SEC
 PYTHON_STAGE_START_EPOCH="$(date +%s)"
 python3 main.py "$MODE"
 PYTHON_STAGE_END_EPOCH="$(date +%s)"
 PYTHON_STAGE_ELAPSED_SEC=$((PYTHON_STAGE_END_EPOCH - PYTHON_STAGE_START_EPOCH))
 echo "[$(date +"%F %T")] Python automation finished in ${PYTHON_STAGE_ELAPSED_SEC}s ($(format_elapsed "$PYTHON_STAGE_ELAPSED_SEC"))"
+append_automation_log "python_stage" "success" "elapsed_sec=${PYTHON_STAGE_ELAPSED_SEC} fmt=$(format_elapsed "$PYTHON_STAGE_ELAPSED_SEC")"
 
 echo "[$(date +"%F %T")] Run finished successfully"
